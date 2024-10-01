@@ -10,6 +10,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set repository name
-      id: repo-name
-      run: echo "REPO_NAME=$(basename $GITHUB_REPOSITORY)" 
+    - name: Extrair nome nome do centro de custo
+      id: short-repo-name
+      run: echo "SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | cut -c1-4)"
+      shell: bash
+
+
