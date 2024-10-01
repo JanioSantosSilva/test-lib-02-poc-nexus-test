@@ -15,9 +15,20 @@ jobs:
       run: echo "SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | cut -c1-4)" >> $GITHUB_ENV
       shell: bash
 
-    - name: List and display properties file content
+    - name: Collect dist values into an array 
       run: |
-        find . -name "*.properties" -exec cat {} \;
+        # Inicializa um array vazio
+        dist_values=()
+    
+        # Encontra todos os arquivos .properties e processa cada um
+        for file in $(find . -name "*.properties"); do
+          # Extrai o valor de 'dist' e adiciona ao array
+          dist_value=$(grep -oP '(?<=dist=).*' "$file")
+          dist_values+=("$dist_value")
+        done
+    
+        # Exibe os valores coletados
+        echo "Dist values: ${dist_values[@]}"
       shell: bash
      
 
