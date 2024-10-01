@@ -12,7 +12,4 @@ jobs:
 
     - name: Set repository name
       id: repo-name
-      run: echo "REPO_NAME=$(basename $GITHUB_REPOSITORY)" >> $GITHUB_ENV
-   
-    #- name: Use repository name in path
-    #  run: echo "The repository name is ${{ env.REPO_NAME }} and it will be used in the path /path/to/${{ env.REPO_NAME }}"
+      run: echo "REPO_NAME=$(basename $GITHUB_REPOSITORY)" 
