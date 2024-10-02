@@ -34,7 +34,7 @@ jobs:
            NOME_ENCONTRADO=$AWB_PART
         fi
 
-         if [[ -n "$NOME_ENCONTRADO" ]]; then
+        if [[ -n "$NOME_ENCONTRADO" ]]; then
           LOWERCASE_NAME=$(echo "$NOME_ENCONTRADO" | tr '[:upper:]' '[:lower:]')
           echo "Buscando arquivo properties no repositório com prefixo: $LOWERCASE_NAME"
           for FILE in $(find . -name "${LOWERCASE_NAME}-*.properties"); do
