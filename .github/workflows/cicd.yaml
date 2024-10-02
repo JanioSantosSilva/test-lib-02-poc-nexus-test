@@ -47,7 +47,7 @@ jobs:
             if [[ ${#dir_name} -eq 4 ]]; then
               echo "Pasta com 4 caracteres encontrada: $dir_name"
               NOME_ENCONTRADO=$dir_name
-              if [[ -f "$dir_name/*.properties" ]]; then
+              if [[ -f "$dir_name"/*.properties ]]; then
                 ARQUIVO_ENCONTRADO=$(ls "$dir_name"/*.properties)
                 break
               fi
@@ -61,7 +61,7 @@ jobs:
               if [[ "$dir_name" == *"AWB"* ]]; then
                 echo "Pasta contendo 'AWB' encontrada: $dir_name"
                 NOME_ENCONTRADO=$dir_name
-                if [[ -f "$dir_name/*.properties" ]]; then
+                if [[ -f "$dir_name"/*.properties ]]; then
                   ARQUIVO_ENCONTRADO=$(ls "$dir_name"/*.properties)
                   break
                 fi
@@ -72,3 +72,5 @@ jobs:
           # Definir variáveis globais
           echo "::set-output name=nome_encontrado::$NOME_ENCONTRADO"
           echo "::set-output name=arquivo_encontrado::$ARQUIVO_ENCONTRADO"
+
+     
