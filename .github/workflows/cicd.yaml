@@ -13,8 +13,8 @@ jobs:
     - name: Extract name with 4 characters
       id: extract
       run: |
-        # Get the repository name
-        REPO_NAME="JanioSantosSilva/PDBlW-teste-AWB"  # Exemplo de nome do repositório para teste
+        # Get the repository name from the GitHub context
+        REPO_NAME="${{ github.repository }}"  # This will dynamically get the repository name
         
         # Extract the parts of the repository name
         IFS='/' read -r -a PARTS <<< "$REPO_NAME"
@@ -42,10 +42,8 @@ jobs:
         fi
         
         # Set the output to use in later steps
-        echo "name=$FOUR_CHAR_NAME" >> $GITHUB_ENV
-    
+        echo "FOUR_CHAR_NAME=$FOUR_CHAR_NAME" >> $GITHUB_ENV
   
-      
     - name: List exported environment variables
       run: |
         for var in $(compgen -v | grep '^dist'); do
