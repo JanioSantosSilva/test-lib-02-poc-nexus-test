@@ -10,46 +10,76 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
     
-    - name: Extract name with 4 characters
-      id: extract
+    - name: Checar nome do repositório
+      id: checar_nome
       run: |
-        # Get the repository name from the GitHub context
         REPO_NAME="${{ github.repository }}"  # This will dynamically get the repository name
         
         # Extract the parts of the repository name
         IFS='/' read -r -a PARTS <<< "$REPO_NAME"
         REPO_NAME=${PARTS[1]} # Use the second part of the repository name (ignoring owner)
-        
+
         echo "Extracted repository name: $REPO_NAME"
-    
-        FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$')
-        if [ -z "$FOUR_CHAR_NAME" ]; then
-          FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^AWB$')
+
+        # Primeira validação: Procurar por nome com 4 caracteres
+        if [[ ${#REPO_NAME} -eq 4 ]]; then
+          echo "Nome com 4 caracteres encontrado: $REPO_NAME"
+          NOME_ENCONTRADO=$REPO_NAME
         fi
-        
-        if [ -n "$FOUR_CHAR_NAME" ]; then
-          if [[ "$FOUR_CHAR_NAME" == "AWB" ]]; then
-            echo "'AWB' found in the repository name."
-          else
-            echo "4 character name found: $FOUR_CHAR_NAME"
-          fi
-        else
-          echo "Neither a 4 character name nor 'AWB' was found."
-          exit 1 
+
+        # Segunda validação: Se não encontrar, procurar por 'AWB' no nome do repositório
+        if [[ -z "$NOME_ENCONTRADO" && "$REPO_NAME" == *"AWB"* ]]; then
+          echo "Nome contendo 'AWB' encontrado: $REPO_NAME"
+          NOME_ENCONTRADO=$REPO_NAME
         fi
-        
-        # Set the output to use in later steps
-        echo "FOUR_CHAR_NAME=$FOUR_CHAR_NAME" >> $GITHUB_ENV
-  
-    - name: List exported environment variables
+
+        # Definir variável global
+        echo "::set-output name=nome_encontrado::$NOME_ENCONTRADO"
+
+    - name: Usar nome encontrado
       run: |
-        for var in $(compgen -v | grep '^dist'); do
-          echo "$var=${!var}"
-        done
-      
-    - name: Extract paths from environment variables
-      run: |
-       for var in $(compgen -v | grep '^dist3'); do
-         path=${!var}
-         echo "Extracted path: $path"
-       done
+        echo "Nome final encontrado: ${{ steps.checar_nome.outputs.nome_encontrado }}"
+
+    #- name: Extract name with 4 characters
+    #  id: extract
+    #  run: |
+    #    # Get the repository name from the GitHub context
+    #    REPO_NAME="${{ github.repository }}"  # This will dynamically get the repository name
+    #    
+    #    # Extract the parts of the repository name
+    #    IFS='/' read -r -a PARTS <<< "$REPO_NAME"
+    #    REPO_NAME=${PARTS[1]} # Use the second part of the repository name (ignoring owner)
+    #    
+    #    echo "Extracted repository name: $REPO_NAME"
+    #
+    #    FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$')
+    #    if [ -z "$FOUR_CHAR_NAME" ]; then
+    #      FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^AWB$')
+    #    fi
+    #    
+    #    if [ -n "$FOUR_CHAR_NAME" ]; then
+    #      if [[ "$FOUR_CHAR_NAME" == "AWB" ]]; then
+    #        echo "'AWB' found in the repository name."
+    #      else
+    #        echo "4 character name found: $FOUR_CHAR_NAME"
+    #      fi
+    #    else
+    #      echo "Neither a 4 character name nor 'AWB' was found."
+    #      exit 1 
+    #    fi
+    #    
+    #    # Set the output to use in later steps
+    #    echo "FOUR_CHAR_NAME=$FOUR_CHAR_NAME" >> $GITHUB_ENV
+  #
+    #- name: List exported environment variables
+    #  run: |
+    #    for var in $(compgen -v | grep '^dist'); do
+    #      echo "$var=${!var}"
+    #    done
+    #  
+    #- name: Extract paths from environment variables
+    #  run: |
+    #   for var in $(compgen -v | grep '^dist3'); do
+    #     path=${!var}
+    #     echo "Extracted path: $path"
+    #   done
