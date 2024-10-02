@@ -12,6 +12,7 @@ jobs:
 
     - name: Extract 4-character name from repository
       id: extract-name
+      shell: bash
       run: |
         # Inicializa a variável SHORT_REPO_NAME como vazia
         SHORT_REPO_NAME=""
@@ -25,16 +26,14 @@ jobs:
 
         # Itera sobre os padrões e tenta capturar a sequência de 4 caracteres
         for pattern in "${patterns[@]}"; do
-          SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | grep -oE "$pattern" | head -n 1)
-          if [ -n "$SHORT_REPO_NAME" ]; then
-        break
-          fi
+         echo "Testing pattern: $pattern"
+         SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | grep -oE "$pattern" | head -n 1)
+         echo "Captured value: $SHORT_REPO_NAME"
+         if [ -n "$SHORT_REPO_NAME" ]; then
+          break
+         fi
         done
-        
-        #  Exporta a variável SHORT_REPO_NAME para o ambiente
-        echo "SHORT_REPO_NAME=$SHORT_REPO_NAME"
-      shell: bash
-      
+    
     
     - name: Find, export, and store file paths dynamically
       shell: bash
