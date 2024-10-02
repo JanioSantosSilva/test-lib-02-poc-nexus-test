@@ -54,47 +54,4 @@ jobs:
         fi
     
 
-    - name: Checar pastas e arquivos
-      id: checar_arquivos
-      run: |
-          NOME_ENCONTRADO=""
-          ARQUIVO_ENCONTRADO=""
-
-          for dir in */; do
-              dir_name=$(basename "$dir")
-              if [[ ${#dir_name} -eq 4 ]]; then
-                echo "Pasta com 4 caracteres encontrada: $dir_name"
-                NOME_ENCONTRADO=$dir_name
-                for file in "$dir_name"/*.properties; do
-                  if [[ -f "$file" ]]; then
-                    ARQUIVO_ENCONTRADO="$file"
-                    echo "Arquivo encontrado: $ARQUIVO_ENCONTRADO"
-                    break 2
-                  fi
-                done
-              fi
-            done
-  
-            # Procurar por pastas contendo 'AWB' se não encontrou anteriormente
-            if [[ -z "$ARQUIVO_ENCONTRADO" ]]; then
-              for dir in */; do
-                dir_name=$(basename "$dir")
-                if [[ "$dir_name" == *"AWB"* ]]; then
-                  echo "Pasta contendo 'AWB' encontrada: $dir_name"
-                  NOME_ENCONTRADO=$dir_name
-                  for file in "$dir_name"/*.properties; do
-                    if [[ -f "$file" ]]; then
-                      ARQUIVO_ENCONTRADO="$file"
-                      echo "Arquivo encontrado: $ARQUIVO_ENCONTRADO"
-                      break 2
-                    fi
-                  done
-                fi
-              done
-            fi
-  
-            # Definir variáveis globais
-            echo "::set-output name=nome_encontrado::$NOME_ENCONTRADO"
-            echo "::set-output name=arquivo_encontrado::$ARQUIVO_ENCONTRADO"
-  
-     
+   
