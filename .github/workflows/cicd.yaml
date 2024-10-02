@@ -21,7 +21,7 @@ jobs:
         REPO_NAME=${PARTS[1]} # Use the second part of the repository name (ignoring owner)
 
         # Find and print the 4 character name
-        FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$')
+        FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{5}$')
         echo "4 character names found: $FOUR_CHAR_NAME"
 
         # Set the output to use in later steps
@@ -60,26 +60,4 @@ jobs:
         
         echo "All file paths have been exported."
     
-    #- name: Use dist2 in another action
-    #  run: |
-    #    echo "Using dist2: ${{ env.dist2 }}"
-    
-
-    #- name: Combine and display extracted name and properties
-    #  shell: bash
-    #  run: |
-    #   # Combine the extracted short repo name with properties
-    #   combined_output="Centro de Custo: $SHORT_REPO_NAME"
-    #   
-    #   # Append all properties to the combined output
-    #   for file in $(find . -name "*.properties"); do
-    #     while IFS='=' read -r key value; do
-    #     if [ -n "$key" ] && [ -n "$value" ]; then
-    #       combined_output+="\n${key}=${value}"
-    #     fi
-    #     done < "$file"
-    #   done
-    #   
-    #   # Display the combined output
-    #   echo -e "$combined_output"
-    #
+  
