@@ -22,53 +22,24 @@ jobs:
     
         # Find the 4 character name
         FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$')
-        echo "4 character names found: $FOUR_CHAR_NAME"
-        
-        if [ -z "$FOUR_CHAR_NAME" ]; then
-          # If no 4 character name found, search for "AWB"
-          FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^AWB')
-          if [ -z "$FOUR_CHAR_NAME" ]; then
-            echo "No 4 character name or 'AWB' found in the repository name."
-            exit 1  # Exit with error code 1 if neither is found
-          else
-            echo "'AWB' found in the repository name."
-          fi
-        else
+    
+        if [ -n "$FOUR_CHAR_NAME" ]; then
           echo "4 character name found: $FOUR_CHAR_NAME"
+        else
+          echo "No 4 character name found. Searching for 'AWB'."
+          # Search for "AWB"
+          FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^AWB')
+          if [ -n "$FOUR_CHAR_NAME" ]; then
+            echo "'AWB' found in the repository name."
+          else
+            echo "Neither a 4 character name nor 'AWB' was found."
+            exit 1  # Exit with error code 1 if neither is found
+          fi
         fi
     
         # Set the output to use in later steps
         echo "name=$FOUR_CHAR_NAME" >> $GITHUB_ENV
     
-  
-    - name: Find, export, and store file paths dynamically
-      shell: bash
-      run: |
-        # Inicializa o contador
-        counter=1
-        
-        # Encontra todos os arquivos .properties e processa cada um
-        for file in $(find . -name "*.properties"); do
-          # Define uma variável dinâmica distN onde N é o valor do contador
-          var_name="dist${counter}"
-          
-          # Exporta o caminho do arquivo para uma variável com o nome dinâmico
-          echo "${var_name}=$file" >> $GITHUB_ENV
-          echo "Exporting ${var_name} with value: $file"
-          
-          # Incrementa o contador
-          counter=$((counter + 1))
-          
-          # Extrai todas as propriedades e exporta para o ambiente GitHub
-          while IFS='=' read -r key value; do
-            if [ -n "$key" ] && [ -n "$value" ]; then
-              echo "Exporting property: ${key}=${value}"
-              echo "${key}=${value}" >> $GITHUB_ENV
-            fi
-          done < "$file"
-        done
-        
-        echo "All file paths have been exported."
   
       
     - name: List exported environment variables
