@@ -20,17 +20,19 @@ jobs:
         REPO_NAME=${PARTS[1]} # Use the second part of the repository name (ignoring owner)
 
         echo "Extracted repository name: $REPO_NAME"
-
-        # Primeira validação: Procurar por nome com 4 caracteres
-        if [[ ${#REPO_NAME} -eq 4 ]]; then
-          echo "Nome com 4 caracteres encontrado: $REPO_NAME"
-          NOME_ENCONTRADO=$REPO_NAME
+        
+        if [[ ${#REPO_NAME} -ge 4 ]]; then
+          FOUR_CHAR_PART=$(echo $REPO_NAME | grep -o '\b\w\{4\}\b')
+          if [[ ! -z "$FOUR_CHAR_PART" ]]; then
+            echo "Nome com 4 caracteres encontrado: $FOUR_CHAR_PART"
+            NOME_ENCONTRADO=$FOUR_CHAR_PART
+          fi
         fi
 
-        # Segunda validação: Se não encontrar, procurar por 'AWB' no nome do repositório
         if [[ -z "$NOME_ENCONTRADO" && "$REPO_NAME" == *"AWB"* ]]; then
-          echo "Nome contendo 'AWB' encontrado: $REPO_NAME"
-          NOME_ENCONTRADO=$REPO_NAME
+          AWB_PART=$(echo $REPO_NAME | grep -o 'AWB[^/]*')
+          echo "Nome contendo 'AWB' encontrado: $AWB_PART"
+          NOME_ENCONTRADO=$AWB_PART
         fi
 
         # Definir variável global
