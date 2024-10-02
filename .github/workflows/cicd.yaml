@@ -41,17 +41,18 @@ jobs:
           NOME_ENCONTRADO=""
           ARQUIVO_ENCONTRADO=""
 
-          # Procurar por pastas com 4 caracteres
-          for dir in */; do
+        for dir in */; do
             dir_name=$(basename "$dir")
             if [[ ${#dir_name} -eq 4 ]]; then
               echo "Pasta com 4 caracteres encontrada: $dir_name"
               NOME_ENCONTRADO=$dir_name
-              if [[ -f "$dir_name"/*.properties ]]; then
-                ARQUIVO_ENCONTRADO=$(ls "$dir_name"/*.properties)
-                echo "Arquivo encontrado: $dir_name/$(basename $ARQUIVO_ENCONTRADO)"
-                break
-              fi
+              for file in "$dir_name"/*.properties; do
+                if [[ -f "$file" ]]; then
+                  ARQUIVO_ENCONTRADO="$file"
+                  echo "Arquivo encontrado: $ARQUIVO_ENCONTRADO"
+                  break 2
+                fi
+              done
             fi
           done
 
@@ -62,10 +63,13 @@ jobs:
               if [[ "$dir_name" == *"AWB"* ]]; then
                 echo "Pasta contendo 'AWB' encontrada: $dir_name"
                 NOME_ENCONTRADO=$dir_name
-                if [[ -f "$dir_name"/*.properties ]]; then
-                  ARQUIVO_ENCONTRADO=$(ls "$dir_name"/*.properties)
-                  break
-                fi
+                for file in "$dir_name"/*.properties; do
+                  if [[ -f "$file" ]]; then
+                    ARQUIVO_ENCONTRADO="$file"
+                    echo "Arquivo encontrado: $ARQUIVO_ENCONTRADO"
+                    break 2
+                  fi
+                done
               fi
             done
           fi
