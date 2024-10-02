@@ -18,95 +18,78 @@ jobs:
         
         # Extract the parts of the repository name
         IFS='/' read -r -a PARTS <<< "$REPO_NAME"
-        REPO_NAME=${PARTS[1]} # Use the second part of the repository name (ignoring owner)
-
+        REPO_NAME=${PARTS} # Use the second part of the repository name (ignoring owner)
+    
         echo "Extracted repository name: $REPO_NAME"
-          export_files() {
-          local search_name=$1
-          # Inicializa o contador
-          counter=1
-          
-          # Encontra todos os arquivos .properties e .pddl que contêm o nome do repositório e processa cada um
-          for file in $(find . -name "*${search_name}*.properties"); do
-            # Define uma variável dinâmica distN onde N é o valor do contador
-            var_name="dist${counter}"
-            
-            # Exporta o caminho do arquivo para uma variável com o nome dinâmico
-            echo "${var_name}=$file" >> $GITHUB_ENV
-            echo "Exporting ${var_name} with value: $file"
-            
-            # Incrementa o contador
-            counter=$((counter + 1))
-            
-            # Extrai todas as propriedades e exporta para o ambiente GitHub
-            while IFS='=' read -r key value; do
-              if [ -n "$key" ] && [ -n "$value" ]; then
-                echo "Exporting property: ${key}=${value}"
-                echo "${key}=${value}" >> $GITHUB_ENV
-              fi
-            done < "$file"
-          done
-          
-          echo "All file paths have been exported."
-        }
-
+        
         if [[ ${#REPO_NAME} -eq 4 ]]; then
           FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$')
           echo "Nome Centro de Custo: $FOUR_CHAR_NAME"
           NOME_ENCONTRADO=$FOUR_CHAR_NAME
-          export_files "$FOUR_CHAR_NAME"
         fi
         
         if [[ -z "$NOME_ENCONTRADO" && "$REPO_NAME" == *"AWB"* ]]; then
            AWB_PART=$(echo $REPO_NAME | grep -o 'AWB[^/]*')
            echo "Nome contendo 'AWB' encontrado: $AWB_PART"
            NOME_ENCONTRADO=$AWB_PART
-           export_files "$AWB_PART"
         fi
+    
+        # Check if NOME_ENCONTRADO is set and perform the search for the properties file
+        if [[ -n "$NOME_ENCONTRADO" ]]; then
+          LOWERCASE_NAME=$(echo "$NOME_ENCONTRADO" | tr '[:upper:]' '[:lower:]')
+          echo "Buscando arquivo properties no repositório com prefixo: $LOWERCASE_NAME"
+          for FILE in $(find . -name "${LOWERCASE_NAME}-*.properties"); do
+            echo "Arquivo encontrado: $FILE"
+            cat "$FILE"
+          done
+        else
+          echo "Nenhum nome de centro de custo encontrado."
+        fi
+    
 
     
 
-    - name: Checar pastas e arquivos
-      id: checar_arquivos
-      run: |
-          NOME_ENCONTRADO=""
-          ARQUIVO_ENCONTRADO=""
-
-          for dir in */; do
-              dir_name=$(basename "$dir")
-              if [[ ${#dir_name} -eq 4 ]]; then
-                echo "Pasta com 4 caracteres encontrada: $dir_name"
-                NOME_ENCONTRADO=$dir_name
-                for file in "$dir_name"/*.properties; do
-                  if [[ -f "$file" ]]; then
-                    ARQUIVO_ENCONTRADO="$file"
-                    echo "Arquivo encontrado: $ARQUIVO_ENCONTRADO"
-                    break 2
-                  fi
-                done
-              fi
-            done
-  
-            # Procurar por pastas contendo 'AWB' se não encontrou anteriormente
-            if [[ -z "$ARQUIVO_ENCONTRADO" ]]; then
-              for dir in */; do
-                dir_name=$(basename "$dir")
-                if [[ "$dir_name" == *"AWB"* ]]; then
-                  echo "Pasta contendo 'AWB' encontrada: $dir_name"
-                  NOME_ENCONTRADO=$dir_name
-                  for file in "$dir_name"/*.properties; do
-                    if [[ -f "$file" ]]; then
-                      ARQUIVO_ENCONTRADO="$file"
-                      echo "Arquivo encontrado: $ARQUIVO_ENCONTRADO"
-                      break 2
-                    fi
-                  done
-                fi
-              done
-            fi
-  
-            # Definir variáveis globais
-            echo "::set-output name=nome_encontrado::$NOME_ENCONTRADO"
-            echo "::set-output name=arquivo_encontrado::$ARQUIVO_ENCONTRADO"
-  
-     
+    #-  name: Checar pastas e arquivos
+    #   id: checar_arquivos
+    #  un: |
+    #      NOME_ENCONTRADO=""
+    #      ARQUIVO_ENCONTRADO=""
+#
+    #      for dir in */; do
+    #          dir_name=$(basename "$dir")
+    #          if [[ ${#dir_name} -eq 4 ]]; then
+    #            echo "Pasta com 4 caracteres encontrada: $dir_name"
+    #            NOME_ENCONTRADO=$dir_name
+    #            for file in "$dir_name"/*.properties; do
+    #              if [[ -f "$file" ]]; then
+    #                ARQUIVO_ENCONTRADO="$file"
+    #                echo "Arquivo encontrado: $ARQUIVO_ENCONTRADO"
+    #                break 2
+    #              fi
+    #            done
+    #          fi
+    #        done
+  #
+    #        # Procurar por pastas contendo 'AWB' se não encontrou anteriormente
+    #        if [[ -z "$ARQUIVO_ENCONTRADO" ]]; then
+    #          for dir in */; do
+    #            dir_name=$(basename "$dir")
+    #            if [[ "$dir_name" == *"AWB"* ]]; then
+    #              echo "Pasta contendo 'AWB' encontrada: $dir_name"
+    #              NOME_ENCONTRADO=$dir_name
+    #              for file in "$dir_name"/*.properties; do
+    #                if [[ -f "$file" ]]; then
+    #                  ARQUIVO_ENCONTRADO="$file"
+    #                  echo "Arquivo encontrado: $ARQUIVO_ENCONTRADO"
+    #                  break 2
+    #                fi
+    #              done
+    #            fi
+    #          done
+    #        fi
+  #
+    #        # Definir variáveis globais
+    #        echo "::set-output name=nome_encontrado::$NOME_ENCONTRADO"
+    #        echo "::set-output name=arquivo_encontrado::$ARQUIVO_ENCONTRADO"
+  #
+    # 
