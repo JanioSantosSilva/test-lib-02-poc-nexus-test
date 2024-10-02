@@ -24,6 +24,11 @@ jobs:
         FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$')
         echo "4 character names found: $FOUR_CHAR_NAME"
 
+         if [ -z "$FOUR_CHAR_NAME" ]; then
+        # If no 4 character name found, search for "AWB"
+          FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^AWB')
+         fi
+
         # Set the output to use in later steps
         echo "name=$FOUR_CHAR_NAME" >> $GITHUB_ENV
     
