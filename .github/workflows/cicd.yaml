@@ -10,23 +10,28 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Extrair nome nome do centro de custo
+    - name: Extrair nome do centro de custo
       id: short-repo-name
       run: echo "SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | cut -c1-4)" >> $GITHUB_ENV
       shell: bash
-    
-    - name: Find and export properties
+    - name: Find, export, and display properties
       shell: bash
       run: |
-       # Encontra todos os arquivos .properties e processa cada um
-       for file in $(find . -name "*.properties"); do
-         # Extrai todas as propriedades e exporta para o ambiente GitHub
-         while IFS='=' read -r key value; do
-         if [ -n "$key" ] && [ -n "$value" ]; then
-           echo "${key}=${value}" >> $GITHUB_ENV
-         fi
-         done < "$file"
-       done
+        # Encontra todos os arquivos .properties e processa cada um
+        for file in $(find . -name "*.properties"); do
+          echo "Processing file: $file" # Exibe o caminho do arquivo
+          # Exporta o caminho do arquivo para o ambiente GitHub
+          echo "FILE_PATH=$file" >> $GITHUB_ENV
+          
+          # Extrai todas as propriedades e exporta para o ambiente GitHub
+          while IFS='=' read -r key value; do
+            if [ -n "$key" ] && [ -n "$value" ]; then
+              # Exibe a propriedade no log e exporta para o ambiente
+              echo "Exporting property: ${key}=${value}"
+              echo "${key}=${value}" >> $GITHUB_ENV
+            fi
+          done < "$file"
+        done
 
     - name: Combine and display extracted name and properties
       shell: bash
