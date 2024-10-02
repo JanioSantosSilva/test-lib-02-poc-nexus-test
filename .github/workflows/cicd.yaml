@@ -12,7 +12,19 @@ jobs:
 
     - name: Extrair nome do centro de custo
       id: short-repo-name
-      run: echo "SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | cut -c1-4)" >> $GITHUB_ENV
+      run: |
+        # Captura a sequência de 4 caracteres antes do hífen, se existir
+        SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | grep -oE '[a-zA-Z0-9]{4}(?=-)' | head -n 1)
+        
+        # Se não encontrar, captura a sequência de 4 caracteres após o hífen
+        if [ -z "$SHORT_REPO_NAME" ]; then
+          SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | grep -oE '(?<=-)[a-zA-Z0-9]{4}' | head -n 1)
+        fi
+
+        
+        # Exporta a variável SHORT_REPO_NAME para o ambiente
+        echo "SHORT_REPO_NAME=$SHORT_REPO_NAME"
+        echo "SHORT_REPO_NAME=$SHORT_REPO_NAME" >> $GITHUB_ENV
       shell: bash
     
     - name: Find, export, and store file paths dynamically
@@ -44,9 +56,9 @@ jobs:
         
         echo "All file paths have been exported."
     
-    - name: Use dist2 in another action
-      run: |
-        echo "Using dist2: ${{ env.dist2 }}"
+    #- name: Use dist2 in another action
+    #  run: |
+    #    echo "Using dist2: ${{ env.dist2 }}"
     
 
     #- name: Combine and display extracted name and properties
