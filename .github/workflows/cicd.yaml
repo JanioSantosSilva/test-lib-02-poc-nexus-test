@@ -21,16 +21,13 @@ jobs:
         REPO_NAME=${PARTS[1]} # Use the second part of the repository name (ignoring owner)
 
         # Find and print the 4 character name
-        FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{5}$')
+        FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$')
         echo "4 character names found: $FOUR_CHAR_NAME"
 
         # Set the output to use in later steps
-        echo "::set-output name=name::$FOUR_CHAR_NAME"
+        echo "name=$FOUR_CHAR_NAME" >> $GITHUB_ENV
     
-    - name: Display extracted name
-      run: |
-        echo "Extracted name: ${{ steps.extract.outputs.name }}"
-
+  
     - name: Find, export, and store file paths dynamically
       shell: bash
       run: |
@@ -59,5 +56,10 @@ jobs:
         done
         
         echo "All file paths have been exported."
-    
   
+      
+    - name: List exported environment variables
+      run: |
+        for var in $(compgen -v | grep '^dist'); do
+          echo "$var=${!var}"
+        done
