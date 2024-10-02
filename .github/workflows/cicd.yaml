@@ -35,24 +35,6 @@ jobs:
         echo "SHORT_REPO_NAME=$SHORT_REPO_NAME"
       shell: bash
       
-
-    - name: Extrair nome do centro de custo
-      id: short-repo-name
-      run: |
-        # Inicializa a variável SHORT_REPO_NAME como vazia
-        SHORT_REPO_NAME=""
-        
-        # Tenta capturar a sequência de 4 caracteres antes do hífen
-        SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | grep -oE '[a-zA-Z0-9]{4}(?=-)' | head -n 1)
-    
-        # Se não encontrar, tenta capturar a sequência de 4 caracteres após o último hífen
-        if [ -z "$SHORT_REPO_NAME" ]; then
-          SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | grep -oE '[a-zA-Z0-9]{4}$')
-        fi
-        
-        # Exporta a variável SHORT_REPO_NAME para o ambiente
-        echo "SHORT_REPO_NAME=$SHORT_REPO_NAME" >> $GITHUB_ENV
-      shell: bash
     
     - name: Find, export, and store file paths dynamically
       shell: bash
