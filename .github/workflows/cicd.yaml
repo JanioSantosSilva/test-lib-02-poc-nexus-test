@@ -14,25 +14,30 @@ jobs:
       id: short-repo-name
       run: echo "SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | cut -c1-4)" >> $GITHUB_ENV
       shell: bash
-    - name: Find, export, and display properties
+    - name: Find, export, and store file paths
       shell: bash
       run: |
+        # Inicializa a variável FILE_PATHS para armazenar os caminhos dos arquivos
+        FILE_PATHS=""
+    
         # Encontra todos os arquivos .properties e processa cada um
         for file in $(find . -name "*.properties"); do
-          echo "Processing file: $file" # Exibe o caminho do arquivo
-          # Exporta o caminho do arquivo para o ambiente GitHub
-          echo "FILE_PATH=$file" >> $GITHUB_ENV
+          # Adiciona o caminho do arquivo à variável FILE_PATHS
+          FILE_PATHS="$FILE_PATHS $file"
           
           # Extrai todas as propriedades e exporta para o ambiente GitHub
           while IFS='=' read -r key value; do
             if [ -n "$key" ] && [ -n "$value" ]; then
-              # Exibe a propriedade no log e exporta para o ambiente
               echo "Exporting property: ${key}=${value}"
               echo "${key}=${value}" >> $GITHUB_ENV
             fi
           done < "$file"
         done
-
+    
+        # Exporta a variável FILE_PATHS com todos os caminhos
+        echo "FILE_PATHS=$FILE_PATHS" >> $GITHUB_ENV
+        echo "Stored file paths: $FILE_PATHS" # Exibe os caminhos armazenados
+    
     - name: Combine and display extracted name and properties
       shell: bash
       run: |
