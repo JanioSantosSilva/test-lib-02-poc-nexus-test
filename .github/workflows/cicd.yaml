@@ -10,7 +10,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-
     - name: Extrair nome nome do centro de custo
       id: short-repo-name
       run: echo "SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | cut -c1-4)" >> $GITHUB_ENV
@@ -28,5 +27,22 @@ jobs:
          fi
          done < "$file"
        done
+
+    - name: Combine and display extracted name and properties
+      shell: bash
+      run: |
+       # Combine the extracted short repo name with properties
+       combined_output="Centro de Custo: $SHORT_REPO_NAME"
        
+       # Append all properties to the combined output
+       for file in $(find . -name "*.properties"); do
+         while IFS='=' read -r key value; do
+         if [ -n "$key" ] && [ -n "$value" ]; then
+           combined_output+="\n${key}=${value}"
+         fi
+         done < "$file"
+       done
+       
+       # Display the combined output
+       echo -e "$combined_output"
     
