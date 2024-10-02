@@ -33,16 +33,11 @@ jobs:
            NOME_ENCONTRADO=$AWB_PART
         fi
 
-        # Definir variável global
-        echo "::set-output name=nome_encontrado::$NOME_ENCONTRADO"
+    
 
-    - name: Usar nome encontrado
+    - name: Checar pastas e arquivos
+      id: checar_arquivos
       run: |
-        echo "Nome final encontrado: ${{ steps.checar_nome.outputs.nome_encontrado }}"
-
-        - name: Checar pastas e arquivos
-        id: checar_arquivos
-        run: |
           NOME_ENCONTRADO=""
           ARQUIVO_ENCONTRADO=""
 
