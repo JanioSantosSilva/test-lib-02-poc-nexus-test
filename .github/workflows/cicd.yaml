@@ -14,21 +14,29 @@ jobs:
       id: extract
       run: |
         # Get the repository name
-        REPO_NAME=${{ github.repository }}
-
-        #Extract the parts of the repository name
+        REPO_NAME="JanioSantosSilva/PDBlW-teste-AWB"  # Exemplo de nome do repositório para teste
+    
+        # Extract the parts of the repository name
         IFS='/' read -r -a PARTS <<< "$REPO_NAME"
         REPO_NAME=${PARTS[1]} # Use the second part of the repository name (ignoring owner)
-
-        # Find and print the 4 character name
+    
+        # Find the 4 character name
         FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$')
         echo "4 character names found: $FOUR_CHAR_NAME"
-
-         if [ -z "$FOUR_CHAR_NAME" ]; then
-        # If no 4 character name found, search for "AWB"
+        
+        if [ -z "$FOUR_CHAR_NAME" ]; then
+          # If no 4 character name found, search for "AWB"
           FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^AWB')
-         fi
-
+          if [ -z "$FOUR_CHAR_NAME" ]; then
+            echo "No 4 character name or 'AWB' found in the repository name."
+            exit 1  # Exit with error code 1 if neither is found
+          else
+            echo "'AWB' found in the repository name."
+          fi
+        else
+          echo "4 character name found: $FOUR_CHAR_NAME"
+        fi
+    
         # Set the output to use in later steps
         echo "name=$FOUR_CHAR_NAME" >> $GITHUB_ENV
     
