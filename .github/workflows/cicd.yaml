@@ -14,16 +14,24 @@ jobs:
       id: short-repo-name
       run: echo "SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | cut -c1-4)" >> $GITHUB_ENV
       shell: bash
-    - name: Find, export, and store file paths
+    
+    - name: Find, export, and store file paths dynamically
       shell: bash
       run: |
-        # Inicializa a variável FILE_PATHS para armazenar os caminhos dos arquivos
-        FILE_PATHS=""
-    
+        # Inicializa o contador
+        counter=1
+        
         # Encontra todos os arquivos .properties e processa cada um
         for file in $(find . -name "*.properties"); do
-          # Adiciona o caminho do arquivo à variável FILE_PATHS
-          FILE_PATHS="$FILE_PATHS $file"
+          # Define uma variável dinâmica distN onde N é o valor do contador
+          var_name="dist${counter}"
+          
+          # Exporta o caminho do arquivo para uma variável com o nome dinâmico
+          echo "${var_name}=$file" >> $GITHUB_ENV
+          echo "Exporting ${var_name} with value: $file"
+          
+          # Incrementa o contador
+          counter=$((counter + 1))
           
           # Extrai todas as propriedades e exporta para o ambiente GitHub
           while IFS='=' read -r key value; do
@@ -33,26 +41,29 @@ jobs:
             fi
           done < "$file"
         done
+        
+        echo "All file paths have been exported."
     
-        # Exporta a variável FILE_PATHS com todos os caminhos
-        echo "FILE_PATHS=$FILE_PATHS" >> $GITHUB_ENV
-        echo "Stored file paths: $FILE_PATHS" # Exibe os caminhos armazenados
-    
-    - name: Combine and display extracted name and properties
-      shell: bash
+    - name: Use dist2 in another action
       run: |
-       # Combine the extracted short repo name with properties
-       combined_output="Centro de Custo: $SHORT_REPO_NAME"
-       
-       # Append all properties to the combined output
-       for file in $(find . -name "*.properties"); do
-         while IFS='=' read -r key value; do
-         if [ -n "$key" ] && [ -n "$value" ]; then
-           combined_output+="\n${key}=${value}"
-         fi
-         done < "$file"
-       done
-       
-       # Display the combined output
-       echo -e "$combined_output"
+        echo "Using dist2: ${{ env.dist2 }}"
     
+
+    #- name: Combine and display extracted name and properties
+    #  shell: bash
+    #  run: |
+    #   # Combine the extracted short repo name with properties
+    #   combined_output="Centro de Custo: $SHORT_REPO_NAME"
+    #   
+    #   # Append all properties to the combined output
+    #   for file in $(find . -name "*.properties"); do
+    #     while IFS='=' read -r key value; do
+    #     if [ -n "$key" ] && [ -n "$value" ]; then
+    #       combined_output+="\n${key}=${value}"
+    #     fi
+    #     done < "$file"
+    #   done
+    #   
+    #   # Display the combined output
+    #   echo -e "$combined_output"
+    #
