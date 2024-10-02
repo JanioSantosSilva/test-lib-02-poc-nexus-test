@@ -10,7 +10,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
     
-    - name: Checar nome do repositório
+    - name: Checar name centro de Custo
       id: checar_nome
       run: |
         REPO_NAME="${{ github.repository }}"  # This will dynamically get the repository name
@@ -40,46 +40,40 @@ jobs:
       run: |
         echo "Nome final encontrado: ${{ steps.checar_nome.outputs.nome_encontrado }}"
 
-    #- name: Extract name with 4 characters
-    #  id: extract
-    #  run: |
-    #    # Get the repository name from the GitHub context
-    #    REPO_NAME="${{ github.repository }}"  # This will dynamically get the repository name
-    #    
-    #    # Extract the parts of the repository name
-    #    IFS='/' read -r -a PARTS <<< "$REPO_NAME"
-    #    REPO_NAME=${PARTS[1]} # Use the second part of the repository name (ignoring owner)
-    #    
-    #    echo "Extracted repository name: $REPO_NAME"
-    #
-    #    FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$')
-    #    if [ -z "$FOUR_CHAR_NAME" ]; then
-    #      FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^AWB$')
-    #    fi
-    #    
-    #    if [ -n "$FOUR_CHAR_NAME" ]; then
-    #      if [[ "$FOUR_CHAR_NAME" == "AWB" ]]; then
-    #        echo "'AWB' found in the repository name."
-    #      else
-    #        echo "4 character name found: $FOUR_CHAR_NAME"
-    #      fi
-    #    else
-    #      echo "Neither a 4 character name nor 'AWB' was found."
-    #      exit 1 
-    #    fi
-    #    
-    #    # Set the output to use in later steps
-    #    echo "FOUR_CHAR_NAME=$FOUR_CHAR_NAME" >> $GITHUB_ENV
-  #
-    #- name: List exported environment variables
-    #  run: |
-    #    for var in $(compgen -v | grep '^dist'); do
-    #      echo "$var=${!var}"
-    #    done
-    #  
-    #- name: Extract paths from environment variables
-    #  run: |
-    #   for var in $(compgen -v | grep '^dist3'); do
-    #     path=${!var}
-    #     echo "Extracted path: $path"
-    #   done
+        - name: Checar pastas e arquivos
+        id: checar_arquivos
+        run: |
+          NOME_ENCONTRADO=""
+          ARQUIVO_ENCONTRADO=""
+
+          # Procurar por pastas com 4 caracteres
+          for dir in */; do
+            dir_name=$(basename "$dir")
+            if [[ ${#dir_name} -eq 4 ]]; then
+              echo "Pasta com 4 caracteres encontrada: $dir_name"
+              NOME_ENCONTRADO=$dir_name
+              if [[ -f "$dir_name/*.properties" ]]; then
+                ARQUIVO_ENCONTRADO=$(ls "$dir_name"/*.properties)
+                break
+              fi
+            fi
+          done
+
+          # Procurar por pastas contendo 'AWB' se não encontrou anteriormente
+          if [[ -z "$ARQUIVO_ENCONTRADO" ]]; then
+            for dir in */; do
+              dir_name=$(basename "$dir")
+              if [[ "$dir_name" == *"AWB"* ]]; then
+                echo "Pasta contendo 'AWB' encontrada: $dir_name"
+                NOME_ENCONTRADO=$dir_name
+                if [[ -f "$dir_name/*.properties" ]]; then
+                  ARQUIVO_ENCONTRADO=$(ls "$dir_name"/*.properties)
+                  break
+                fi
+              fi
+            done
+          fi
+
+          # Definir variáveis globais
+          echo "::set-output name=nome_encontrado::$NOME_ENCONTRADO"
+          echo "::set-output name=arquivo_encontrado::$ARQUIVO_ENCONTRADO"
