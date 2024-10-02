@@ -49,6 +49,7 @@ jobs:
               NOME_ENCONTRADO=$dir_name
               if [[ -f "$dir_name"/*.properties ]]; then
                 ARQUIVO_ENCONTRADO=$(ls "$dir_name"/*.properties)
+                echo "Pasta com 4 caracteres encontrada: $ARQUIVO_ENCONTRADO"
                 break
               fi
             fi
