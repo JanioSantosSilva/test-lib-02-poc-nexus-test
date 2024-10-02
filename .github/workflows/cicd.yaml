@@ -52,6 +52,10 @@ jobs:
         else
          echo "Nenhum nome de centro de custo encontrado."
         fi
-    
 
-   
+    - name: Extract paths from environment variables
+      run: |
+       for var in $(compgen -v | grep '^dist3'); do
+         path=${!var}
+         echo "Extracted path: $path"
+       done
