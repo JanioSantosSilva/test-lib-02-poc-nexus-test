@@ -24,20 +24,21 @@ jobs:
     
         # Find the 4 character name
         FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$')
-        FOUR_CHAR_NAME=${FOUR_CHAR_NAME:-$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^AWB')}
+        FOUR_CHAR_NAME=${FOUR_CHAR_NAME:-$(echo "$REPO_NAME" | tr '-' '\n' | grep -E 'AWB')}
         
         if [ -n "$FOUR_CHAR_NAME" ]; then
-          if [[ "$FOUR_CHAR_NAME" == "AWB" ]]; then
-             echo "'AWB' found in the repository name."
-          else
-              echo "4 character name found: $FOUR_CHAR_NAME"
-          fi
+         if [[ "$FOUR_CHAR_NAME" == "AWB" ]]; then
+            echo "'AWB' found in the repository name."
+         else
+            echo "4 character name found: $FOUR_CHAR_NAME"
+         fi
         else
           echo "Neither a 4 character name nor 'AWB' was found."
-          exit 1  # Exit with error code 1 if neither is found
+          exit 1 
         fi
-          
-        echo "FOUR_CHAR_NAME=$FOUR_CHAR_NAME" >> $GITHUB_ENV
+        
+         # Set the output to use in later steps
+         echo "FOUR_CHAR_NAME=$FOUR_CHAR_NAME" >> $GITHUB_ENV
   
     - name: List exported environment variables
       run: |
