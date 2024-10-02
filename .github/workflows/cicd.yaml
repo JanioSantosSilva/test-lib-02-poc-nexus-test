@@ -66,7 +66,7 @@ jobs:
       
     - name: Extract paths from environment variables
       run: |
-       for var in $(compgen -v | grep '^dist4'); do
+       for var in $(compgen -v | grep '^dist3'); do
          path=${!var}
          echo "Extracted path: $path"
        done
