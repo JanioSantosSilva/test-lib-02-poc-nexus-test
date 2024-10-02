@@ -26,14 +26,12 @@ jobs:
           FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$')
           echo "Nome Centro de Custo: $FOUR_CHAR_NAME"
           NOME_ENCONTRADO=$FOUR_CHAR_NAME
-          export_files "$FOUR_CHAR_NAME"
         fi
         
         if [[ -z "$NOME_ENCONTRADO" && "$REPO_NAME" == *"AWB"* ]]; then
            AWB_PART=$(echo $REPO_NAME | grep -o 'AWB[^/]*')
            echo "Nome contendo 'AWB' encontrado: $AWB_PART"
            NOME_ENCONTRADO=$AWB_PART
-           export_files "$AWB_PART"
         fi
 
          if [[ -n "$NOME_ENCONTRADO" ]]; then
