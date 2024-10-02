@@ -20,7 +20,6 @@ jobs:
         REPO_NAME=${PARTS[1]} # Use the second part of the repository name (ignoring owner)
 
         echo "Extracted repository name: $REPO_NAME"
-        FOUR_CHAR_PART=$(echo $REPO_NAME | grep -o '\b\w\{4\}\b')
         
         if [[ ${#REPO_NAME} -eq 4 ]]; then
           echo "Nome com 4 caracteres encontrado: $REPO_NAME"
