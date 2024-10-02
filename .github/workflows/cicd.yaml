@@ -16,23 +16,27 @@ jobs:
       run: |
         # Inicializa a variável SHORT_REPO_NAME como vazia
         SHORT_REPO_NAME=""
-
+    
         # Define um array de padrões de regex para tentar capturar a sequência de 4 caracteres
         patterns=(
           '[a-zA-Z0-9]{4}(?=-)'        # 4 caracteres antes do hífen
           '[a-zA-Z0-9]{4}$'            # 4 caracteres após o último hífen
           '[a-zA-Z0-9]{4}(?=-[^-]*$)'  # 4 caracteres após o segundo hífen
         )
-
+    
         # Itera sobre os padrões e tenta capturar a sequência de 4 caracteres
         for pattern in "${patterns[@]}"; do
-         echo "Testing pattern: $pattern"
-         SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | grep -oE "$pattern" | head -n 1)
-         echo "Captured value: $SHORT_REPO_NAME"
-         if [ -n "$SHORT_REPO_NAME" ]; then
-          break
-         fi
+          echo "Testing pattern: $pattern"
+          SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | grep -oE "$pattern" | head -n 1)
+          echo "Captured value: $SHORT_REPO_NAME"
+          if [ -n "$SHORT_REPO_NAME" ]; then
+            break
+          fi
         done
+    
+        # Exporta a variável SHORT_REPO_NAME para o ambiente
+        echo "SHORT_REPO_NAME=$SHORT_REPO_NAME" >> $GITHUB_ENV
+    
     
     
     - name: Find, export, and store file paths dynamically
