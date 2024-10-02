@@ -10,10 +10,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+
     - name: Extrair nome nome do centro de custo
       id: short-repo-name
       run: echo "SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | cut -c1-4)" >> $GITHUB_ENV
       shell: bash
+    
 
     - name: Collect dist values into an array 
       run: |
@@ -23,12 +25,17 @@ jobs:
         # Encontra todos os arquivos .properties e processa cada um
         for file in $(find . -name "*.properties"); do
           # Extrai o valor de 'dist' e adiciona ao array
-          dist_value=$(grep -oP '(?<=dist=).*' "$file")
-          dist_values+=("$dist_value")
+          dist_value=$(grep -oP '^dist=\K.*' "$file")
+          if [ -n "$dist_value" ]; then
+            dist_values+=("$dist_value")
+          fi
         done
     
         # Exibe os valores coletados
         echo "Dist values: ${dist_values[@]}"
+        
+        # Exporta os valores coletados para o ambiente GitHub
+        echo "DIST_VALUES=${dist_values[@]}" >> $GITHUB_ENV
       shell: bash
      
 
