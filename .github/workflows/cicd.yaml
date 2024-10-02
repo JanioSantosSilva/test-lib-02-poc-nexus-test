@@ -10,52 +10,27 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
     
-    - name: Extract repository name
+    - name: Extract name with 4 characters
       id: extract
       run: |
-        REPO_NAME="${{ github.repository }}"
-        # Usa expressão regular para encontrar nomes com 4 caracteres antes ou depois do "if"
-        if [[ $REPO_NAME =~ ([a-zA-Z0-9]{4}) ]]; then
-          echo "Found 4-character name before 'if': ${BASH_REMATCH[1]}"
-        fi
-        if [[ $REPO_NAME =~ if\ ([a-zA-Z0-9]{4}) ]]; then
-          echo "Found 4-character name after 'if': ${BASH_REMATCH[1]}"
-        fi
-        
-    - name: Output result
+        # Get the repository name
+        REPO_NAME=${{ github.repository }}
+
+        # Extract the parts of the repository name
+        IFS='/' read -r -a PARTS <<< "$REPO_NAME"
+        REPO_NAME=${PARTS[1]} # Use the second part of the repository name (ignoring owner)
+
+        # Find and print the 4 character name
+        FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$')
+        echo "4 character names found: $FOUR_CHAR_NAME"
+
+        # Set the output to use in later steps
+        echo "::set-output name=name::$FOUR_CHAR_NAME"
+    
+    - name: Display extracted name
       run: |
-        echo "Repository name: ${{ github.repository }}"
         echo "Extracted name: ${{ steps.extract.outputs.name }}"
 
-    - name: Extract 4-character name from repository
-      id: extract-name
-      shell: bash
-      run: |
-        # Inicializa a variável SHORT_REPO_NAME como vazia
-        SHORT_REPO_NAME=""
-    
-        # Define um array de padrões de regex para tentar capturar a sequência de 4 caracteres
-        patterns=(
-          '[a-zA-Z0-9]{4}(?=-)'        # 4 caracteres antes do hífen
-          '[a-zA-Z0-9]{4}$'            # 4 caracteres após o último hífen
-          '[a-zA-Z0-9]{4}(?=-[^-]*$)'  # 4 caracteres após o segundo hífen
-        )
-    
-        # Itera sobre os padrões e tenta capturar a sequência de 4 caracteres
-        for pattern in "${patterns[@]}"; do
-          echo "Testing pattern: $pattern"
-          SHORT_REPO_NAME=$(basename $GITHUB_REPOSITORY | grep -oE "$pattern" | head -n 1)
-          echo "Captured value: $SHORT_REPO_NAME"
-          if [ -n "$SHORT_REPO_NAME" ]; then
-            break
-          fi
-        done
-    
-        # Exporta a variável SHORT_REPO_NAME para o ambiente
-        echo "SHORT_REPO_NAME=$SHORT_REPO_NAME" >> $GITHUB_ENV
-    
-    
-    
     - name: Find, export, and store file paths dynamically
       shell: bash
       run: |
