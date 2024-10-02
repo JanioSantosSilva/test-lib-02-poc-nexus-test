@@ -15,7 +15,7 @@ jobs:
       run: |
         REPO_NAME="${{ github.repository }}"
         # Pega o nome do repositório (apenas a parte após a última /)
-        NAME="${REPO_NAME##*/}"
+        NAME="${REPO_NAME##*}"
         # Usa expressão regular para encontrar nomes com 4 caracteres antes ou depois do "if"
         if [[ $NAME =~ ([a-zA-Z0-9]{4}) ]]; then
           echo "Found 4-character name before 'if': ${BASH_REMATCH[1]}"
@@ -27,7 +27,7 @@ jobs:
       run: |
         echo "Repository name: ${{ github.repository }}"
         echo "Extracted name: ${{ steps.extract.outputs.name }}"
-        
+
     - name: Extract 4-character name from repository
       id: extract-name
       shell: bash
