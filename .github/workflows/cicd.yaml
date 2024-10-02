@@ -39,10 +39,18 @@ jobs:
           echo "Buscando arquivo properties no repositório com prefixo: $LOWERCASE_NAME"
           for FILE in $(find . -name "${LOWERCASE_NAME}-*.properties"); do
             echo "Arquivo encontrado: $FILE"
-            cat "$FILE"
+    
+             while IFS='=' read -r key value; do
+             if [[ $key == dist* ]]; then
+                echo "Exporting property: ${key}=${value}"
+               echo "${key}=${value}" >> $GITHUB_ENV
+             fi
+           done < "$FILE"
           done
+      
+          echo "All dist properties have been exported."
         else
-          echo "Nenhum nome de centro de custo encontrado."
+         echo "Nenhum nome de centro de custo encontrado."
         fi
     
 
