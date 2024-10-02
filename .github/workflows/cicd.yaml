@@ -60,6 +60,6 @@ jobs:
       
     - name: List exported environment variables
       run: |
-        for var in $(compgen -v | grep '^dist'); do
+        for var in $(compgen -v | grep '^dist1'); do
           echo "$var=${!var}"
         done
