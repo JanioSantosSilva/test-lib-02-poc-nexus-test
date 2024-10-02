@@ -31,7 +31,7 @@ jobs:
           fi
         done
         
-        # Exporta a variável SHORT_REPO_NAME para o ambiente
+        #  Exporta a variável SHORT_REPO_NAME para o ambiente
         echo "SHORT_REPO_NAME=$SHORT_REPO_NAME"
       shell: bash
       
