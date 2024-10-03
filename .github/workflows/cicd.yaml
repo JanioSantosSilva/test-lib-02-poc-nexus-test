@@ -30,8 +30,6 @@ jobs:
         if [[ -n "$FOUR_CHAR_NAME" ]]; then
          echo "Nome Centro de Custo: $FOUR_CHAR_NAME"
          NOME_ENCONTRADO=$FOUR_CHAR_NAME
-        else
-          echo "Nenhum nome com 4 caracteres foi encontrado no nome do repositório."
         fi
         
         if [[ -z "$NOME_ENCONTRADO" && "$REPO_NAME" == *"AWB"* ]]; then
