@@ -1,6 +1,12 @@
 name: CI/CD Workflow
 
-on: [push, pull_request]
+on:
+  workflow_dispatch:
+  push:
+      branches:
+        - main
+
+
 
 jobs:
   build:
@@ -21,12 +27,13 @@ jobs:
         REPO_NAME=${PARTS[1]} # Use the second part of the repository name (ignoring owner)
 
         echo "Extracted repository name: $REPO_NAME"
-        
-        if [[ ${#REPO_NAME} -eq 4 ]]; then
-          FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$')
-          echo "Nome Centro de Custo: $FOUR_CHAR_NAME"
-          NOME_ENCONTRADO=$FOUR_CHAR_NAME
-        fi
+        if [[ ${#REPO_NAME} -eq 4 && $REPO_NAME =~ ^[a-zA-Z0-9]{4}$ ]]; then
+            echo "Nome Centro de Custo: $REPO_NAME"
+            NOME_ENCONTRADO=$REPO_NAME
+        else
+          echo "Nome não encontrado ou não atende aos critérios."
+         fi
+
         
         if [[ -z "$NOME_ENCONTRADO" && "$REPO_NAME" == *"AWB"* ]]; then
            AWB_PART=$(echo $REPO_NAME | grep -o 'AWB[^/]*')
