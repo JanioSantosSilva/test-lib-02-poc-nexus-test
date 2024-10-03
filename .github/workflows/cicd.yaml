@@ -68,7 +68,7 @@ jobs:
            echo "Chave ${KEY} não encontrada no GITHUB_ENV."
        fi
 
-    - name: Display specific property
+    - name: KEY
       run: |
         KEY="dis8"
         VALUE=$(grep "^${KEY}=" $GITHUB_ENV | cut -d'=' -f2)
