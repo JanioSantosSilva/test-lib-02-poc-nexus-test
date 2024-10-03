@@ -24,7 +24,7 @@ jobs:
         
         # Extract the parts of the repository name
         IFS='/' read -r -a PARTS <<< "$REPO_NAME"
-        REPO_NAME=${PARTS[1]} # Use the second part of the repository name (ignoring owner)
+        REPO_NAME=${PARTS[1]} 
         
         FOUR_CHAR_NAME=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$')
         if [[ -n "$FOUR_CHAR_NAME" ]]; then
@@ -57,9 +57,12 @@ jobs:
          echo "Nenhum nome de centro de custo encontrado."
         fi
 
-    - name: Extract paths from environment variables
+    - name: Set new path for dist2
       run: |
-       for var in $(compgen -v | grep '^dist3'); do
-         path=${!var}
-         echo "Extracted path: $path"
-       done
+       NEW_PATH="test/test-validate.pix.properties"
+       echo "dist2_path=${NEW_PATH}" >> $GITHUB_ENV
+    
+    - name: Use new dist2 path
+      run: |
+       echo "Using new dist2 path:"
+       echo "dist2_path=${{ env.dist2_path }}"
