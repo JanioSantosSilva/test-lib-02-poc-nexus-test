@@ -57,12 +57,25 @@ jobs:
          echo "Nenhum nome de centro de custo encontrado."
         fi
 
-    - name: Set new path for dist2
+    - name: Modify specific property
       run: |
-       NEW_PATH="test/test-validate.pix.properties"
-       echo "dist2_path=${NEW_PATH}" >> $GITHUB_ENV
+       KEY="dist3"
+       NEW_VALUE="test-pis.properties"
+       if grep -q "^${KEY}=" $GITHUB_ENV; then
+           sed -i "s/^${KEY}=.*/${KEY}=${NEW_VALUE}/" $GITHUB_ENV
+           echo "Valor de ${KEY} alterado para ${NEW_VALUE}"
+       else
+           echo "Chave ${KEY} não encontrada no GITHUB_ENV."
+       fi
+
+    - name: Display specific property
+      run: |
+        KEY="dis8"
+        VALUE=$(grep "^${KEY}=" $GITHUB_ENV | cut -d'=' -f2)
+        if [[ -n "$VALUE" ]]; then
+            echo "Valor de ${KEY}: ${VALUE}"
+        else
+            echo "Chave ${KEY} não encontrada no GITHUB_ENV."
+        fi
+
     
-    - name: Use new dist2 path
-      run: |
-       echo "Using new dist2 path:"
-       echo "dist2_path=${{ env.dist2_path }}"
