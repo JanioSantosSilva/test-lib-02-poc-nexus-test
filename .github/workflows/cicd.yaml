@@ -57,20 +57,9 @@ jobs:
          echo "Nenhum nome de centro de custo encontrado."
         fi
 
-    - name: Modify specific property
-      run: |
-       KEY="dist3"
-       NEW_VALUE="test-pis.properties"
-       if grep -q "^${KEY}=" $GITHUB_ENV; then
-           sed -i "s/^${KEY}=.*/${KEY}=${NEW_VALUE}/" $GITHUB_ENV
-           echo "Valor de ${KEY} alterado para ${NEW_VALUE}"
-       else
-           echo "Chave ${KEY} não encontrada no GITHUB_ENV."
-       fi
-
     - name: KEY
       run: |
-        KEY="dis8"
+        KEY="dist1"
         VALUE=$(grep "^${KEY}=" $GITHUB_ENV | cut -d'=' -f2)
         if [[ -n "$VALUE" ]]; then
             echo "Valor de ${KEY}: ${VALUE}"
