@@ -61,5 +61,9 @@ jobs:
       run: |
        echo "Conteúdo do GITHUB_ENV:"
        cat $GITHUB_ENV
+    
+    - name: Display specific property
+      run: |
+       echo "Valor de dist1: $dist1"
 
     
