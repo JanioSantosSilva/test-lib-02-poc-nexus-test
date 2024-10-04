@@ -32,12 +32,12 @@ jobs:
           DIST_PROPERTIES=($(find . -name "*.properties" -exec grep -h '^dist' {} +))
           echo "Todas as propriedades dist foram armazenadas no array:"
           printf "%s\n" "${DIST_PROPERTIES[@]}"
-        else
+          for property in "${DIST_PROPERTIES[@]}"; do
+             echo "Propriedade dist: $property"
+            done
+           else
          echo "Nenhum nome de centro de custo encontrado."
         fi
-
-        for DESTINO in "${DIST_PROPERTIES[@]}"; do
-          echo "Fazendo upload para: $DESTINO"
     #- name: Checar name centro de Custo
     #  id: checar_nome
     #  run: |
