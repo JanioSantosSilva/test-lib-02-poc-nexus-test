@@ -35,10 +35,25 @@ jobs:
           for property in "${DIST_PROPERTIES[@]}"; do
              caminho=$(echo "$property" | sed 's/.*="\([^"]*\)".*/\1/')
              echo "Caminho do arquivo: $caminho"
+             echo "$caminho" >> distibuition.properties
             done
            else
          echo "Nenhum nome de centro de custo encontrado."
         fi
+        
+
+    - name: Upload arquivos para Nexus
+      #env:
+       #NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+      # NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+       #NEXUS_URL: ${{ secrets.NEXUS_URL }}
+      run: |
+        for dist in $(cat distibuition.properties); do
+          echo "Fazendo upload para: $dist"
+        done
+
+
+    #curl -u $NEXUS_USERNAME:$NEXUS_PASSWORD --upload-file $dist $NEXUS_URL/$dist
     #- name: Checar name centro de Custo
     #  id: checar_nome
     #  run: |
@@ -116,25 +131,25 @@ jobs:
     #    done
 
     # 5. Verificação da publicação no Nexus
-    - name: Ler dist.properties e fazer upload do artefato JAR no Nexus
-      run: |
-        # Inicializar array de destinos
-        DESTINOS=()
-    
-        # Ler todos os valores que começam com 'jar.dist'
-        while IFS='=' read -r key value; do
-          if [[ $key == dist* ]]; then
-            DESTINOS+=("$value")
-          fi
-        done < dist.properties
-    
-        # Exibir o array de destinos
-        echo "Destinos: ${DESTINOS[@]}"
-    
-        # Fazer upload do artefato JAR para múltiplos destinos no Nexus
-        for DESTINO in "${DESTINOS[@]}"; do
-          echo "Fazendo upload para: $DESTINO"
-          
+    #- name: Ler dist.properties e fazer upload do artefato JAR no Nexus
+    #  run: |
+    #    # Inicializar array de destinos
+    #    DESTINOS=()
+    #
+    #    # Ler todos os valores que começam com 'jar.dist'
+    #    while IFS='=' read -r key value; do
+    #      if [[ $key == dist* ]]; then
+    #        DESTINOS+=("$value")
+    #      fi
+    #    done < dist.properties
+    #
+    #    # Exibir o array de destinos
+    #    echo "Destinos: ${DESTINOS[@]}"
+    #
+    #    # Fazer upload do artefato JAR para múltiplos destinos no Nexus
+    #    for DESTINO in "${DESTINOS[@]}"; do
+    #      echo "Fazendo upload para: $DESTINO"
+    #      
 
 
 
