@@ -29,17 +29,12 @@ jobs:
         NOME_ENCONTRADO=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$' || echo "$REPO_NAME" | grep -o 'AWB[^/]*')
     
         if [[ -n "$NOME_ENCONTRADO" ]]; then
-          LOWERCASE_NAME=$(echo "$NOME_ENCONTRADO" | tr '[:upper:]' '[:lower:]')
-          echo "Buscando arquivo properties no repositório com prefixo: $LOWERCASE_NAME"
-          for FILE in $(find . -name "${LOWERCASE_NAME}-*.properties"); do
-            echo "Arquivo encontrado: $FILE"
-            grep '^dist' "$FILE" >> $GITHUB_ENV
-          done
-          echo "Todas as propriedades dist foram exportadas."
+          DIST_PROPERTIES=($(find . -name "*.properties" -exec grep -h '^dist' {} +))
+          echo "Todas as propriedades dist foram armazenadas no array:"
+          printf "%s\n" "${DIST_PROPERTIES[@]}"
         else
-          echo "Nenhum nome de centro de custo encontrado."
+         echo "Nenhum nome de centro de custo encontrado."
         fi
-
     #- name: Checar name centro de Custo
     #  id: checar_nome
     #  run: |
