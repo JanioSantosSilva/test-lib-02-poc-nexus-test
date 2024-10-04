@@ -33,7 +33,8 @@ jobs:
           echo "Todas as propriedades dist foram armazenadas no array:"
           printf "%s\n" "${DIST_PROPERTIES[@]}"
           for property in "${DIST_PROPERTIES[@]}"; do
-             echo "Propriedade dist: $property"
+             caminho=$(echo "$property" | sed 's/.*="\([^"]*\)".*/\1/')
+             echo "Caminho do arquivo: $caminho"
             done
            else
          echo "Nenhum nome de centro de custo encontrado."
