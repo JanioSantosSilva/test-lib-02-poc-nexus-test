@@ -76,4 +76,49 @@ jobs:
 #
     #
 #
-    
+
+    # 3. Leitura do arquivo dist.properties e criação de array
+    - name: Ler dist.properties e criar array de destinos
+      id: ler_properties
+      run: |
+        # Lendo os valores de jar.dist1 e jar.dist2
+        jar_dist1=$(grep 'jar.dist1=' dist.properties | cut -d'=' -f2)
+        jar_dist2=$(grep 'jar.dist2=' dist.properties | cut -d'=' -f2)
+        
+        # Criando um array com os valores dos destinos
+        DESTINOS=("$jar_dist1" "$jar_dist2")
+        
+        # Exibir o array de destinos
+        echo "Destinos: ${DESTINOS[@]}"
+        
+        # Salvando o array como uma variável de ambiente para outros steps
+        echo "DESTINOS=${DESTINOS[*]}" >> $GITHUB_ENV
+
+    # 4. Upload do artefato JAR para múltiplos destinos no Nexus
+    - name: Upload do artefato JAR no Nexus
+      run: |
+        # Convertendo a string de volta para um array
+        IFS=' ' read -r -a DESTINOS <<< "${{ env.DESTINOS }}"
+        
+        # Iterando sobre cada destino e fazendo o upload
+        for DESTINO in "${DESTINOS[@]}"; do
+          echo "Fazendo upload para: $DESTINO"
+          
+          # Upload do artefato para o Nexus
+          curl -u ${{ secrets.NEXUS_USERNAME }}:${{ secrets.NEXUS_PASSWORD }} \
+            --upload-file target/$JAR_NAME \
+            $NEXUS_URL/$DESTINO/$JAR_NAME
+        done
+
+    # 5. Verificação da publicação no Nexus
+    - name: Verificar publicação no Nexus
+      run: |
+        # Verificando cada destino para confirmar o upload
+        IFS=' ' read -r -a DESTINOS <<< "${{ env.DESTINOS }}"
+        for DESTINO in "${DESTINOS[@]}"; do
+          echo "Verificando publicação em: $DESTINO"
+          
+          # Verificação do artefato no Nexus
+          curl -u ${{ secrets.NEXUS_USERNAME }}:${{ secrets.NEXUS_PASSWORD }} \
+            -I $NEXUS_URL/$DESTINO/$JAR_NAME
+        done
