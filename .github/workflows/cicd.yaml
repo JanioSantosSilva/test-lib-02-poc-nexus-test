@@ -35,6 +35,9 @@ jobs:
         else
          echo "Nenhum nome de centro de custo encontrado."
         fi
+
+        for DESTINO in "${DIST_PROPERTIES[@]}"; do
+          echo "Fazendo upload para: $DESTINO"
     #- name: Checar name centro de Custo
     #  id: checar_nome
     #  run: |
