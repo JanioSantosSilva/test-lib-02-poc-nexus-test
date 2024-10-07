@@ -46,7 +46,7 @@ jobs:
     - name: Upload arquivos para Nexus
       run: |
         commitID=$(git rev-parse --short HEAD)  # Obtém o commit ID curto
-        jarName="teste.jar"  # Defina o nome do seu arquivo JAR aqui
+        jarName="validate.jar"  # Defina o nome do seu arquivo JAR aqui
         jarNameWithCommit="${jarName%.jar}-${commitID}.jar" 
         echo "Fazendo upload do arquivo JAR antes do for: $jarNameWithCommit"
         for dist in $(cat distribution.properties); do
