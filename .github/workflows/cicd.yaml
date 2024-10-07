@@ -48,6 +48,7 @@ jobs:
         commitID=$(git rev-parse --short HEAD)  # Obtém o commit ID curto
         jarName="teste.jar"  # Defina o nome do seu arquivo JAR aqui
         jarNameWithCommit="${jarName%.jar}-${commitID}.jar" 
+        echo "Fazendo upload do arquivo JAR antes do for: $jarNameWithCommit"
         for dist in $(cat distribution.properties); do
           echo "Fazendo upload do arquivo JAR: $jarNameWithCommit"
         done
