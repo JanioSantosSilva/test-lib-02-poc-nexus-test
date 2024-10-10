@@ -16,17 +16,19 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    
+        
     - name: Get properties
       id: checar_nome
       env:
         REPO_NAME: ${{ github.repository }}
       run: |
         REPO_NAME="${{ github.repository }}"
-    
-        # Extrair a parte relevante do nome do repositório
-        REPO_NAME=$(echo "$REPO_NAME" | cut -d'/' -f2)
-    
+        
+        # Extrair a parte relevante do nome do repositório após o hífen
+        REPO_NAME=$(echo "$REPO_NAME" | cut -d'/' -f2 | cut -d'-' -f2-)
+        
+         echo "Nome do repositório: $REPO_NAME"
+
         # Verificar se há um nome de 4 caracteres ou contendo 'AWB'
         NOME_ENCONTRADO=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$' || echo "$REPO_NAME" | grep -o 'AWB[^/]*')
     
@@ -36,7 +38,7 @@ jobs:
           printf "%s\n" "${DIST_PROPERTIES[@]}"
           for property in "${DIST_PROPERTIES[@]}"; do
              caminho=$(echo "$property" | sed 's/.*="\([^"]*\)".*/\1/')
-             echo "$caminho" >> distribution.properties
+             echo "$caminho" 
             done
            else
          echo "Nenhum nome de centro de custo encontrado."
@@ -45,8 +47,8 @@ jobs:
 
     - name: Upload arquivos para Nexus
       run: |
-        commitID=$(git rev-parse --short HEAD)  # Obtém o commit ID curto
-        jarName="validate.jar"  # Defina o nome do seu arquivo JAR aqui
+        commitID=$(git rev-parse --short HEAD)  
+        jarName="validate.jar" 
         jarNameWithCommit="${jarName%.jar}-${commitID}.jar" 
         echo "Fazendo upload do arquivo JAR antes do for: $jarNameWithCommit"
         for dist in $(cat distribution.properties); do
