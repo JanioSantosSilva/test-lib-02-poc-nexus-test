@@ -25,7 +25,7 @@ jobs:
         REPO_NAME="${{ github.repository }}"
         
         # Extrair a parte relevante do nome do repositório após o segundo hífen
-        REPO_NAME=$(echo "$REPO_NAME" | cut -d'/' -f2 | cut -d'-' -f3-)
+        REPO_NAME=$(echo "$REPO_NAME" | cut -d'/' -f2 | cut -d'-' -f4-)
         
          echo "Nome do repositório: $REPO_NAME"
 
