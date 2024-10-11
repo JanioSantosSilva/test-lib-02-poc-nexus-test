@@ -30,15 +30,20 @@ jobs:
         
         if [[ -n "$NOME_ENCONTRADO" ]]; then
           DIST_PROPERTIES=($(find . -name "*.properties" -exec grep -h '^dist' {} +))
-          echo "Todas as propriedades dist foram armazenadas no array:"
-          printf "%s\n" "${DIST_PROPERTIES[@]}"
-          for property in "${DIST_PROPERTIES[@]}"; do
-             caminho=$(echo "$property" | sed 's/.*="\([^"]*\)".*/\1/')
-             echo "paths: $caminho"
-             echo "$caminho" >> dist.properties
-          done
+            echo "Todas as propriedades dist foram armazenadas no array:"
+            printf "%s\n" "${DIST_PROPERTIES[@]}"
+            for property in "${DIST_PROPERTIES[@]}"; do
+              caminho=$(echo "$property" | sed 's/.*="\([^"]*\)".*/\1/')
+              echo "paths: $caminho"
+                properties_file=$(find . -name "jar*.properties")
+                if [[ -n "$properties_file" ]]; then
+                   sed -i "s|^dist.*|dist.newvalue=$caminho|" "$properties_file"
+                else
+                  echo "Arquivo other.properties não encontrado."
+                fi
+            done
         else
-          echo "Nenhum nome de centro de custo encontrado."
+           echo "Nenhum nome de centro de custo encontrado."
         fi
 
     - name: Upload arquivos para Nexus
