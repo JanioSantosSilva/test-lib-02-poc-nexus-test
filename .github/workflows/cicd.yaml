@@ -25,23 +25,28 @@ jobs:
         REPO_NAME="${{ github.repository }}"
         
         # Extrair a parte relevante do nome do repositório após o segundo hífen
-        REPO_NAME=$(echo "$REPO_NAME" | cut -d'/' -f2 | cut -d'-' -f4-)
+        REPO_NAME_PROPERTIES=$(echo "$REPO_NAME" | cut -d'/' -f2)
+        RELEVANT_REPO_NAME=$(echo "$REPO_NAME_PART" | cut -d'-' -f4-)
+        REPO_NAME=$(echo "$REPO_NAME" | cut -d'/' -f2 | cut -d'-' -f4-)  
         
-         echo "Nome do repositório: $REPO_NAME"
+        echo "Nome do repositório: $REPO_NAME"
 
         # Verificar se há um nome de 4 caracteres ou contendo 'AWB'
-        NOME_ENCONTRADO=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$' || echo "$REPO_NAME" | grep -o 'AWB[^/]*')
-    
+        NOME_ENCONTRADO=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$' || echo "$REPO_NAME" | grep -o 'EINT[^/]*')
+        NAME_PROPERTIES=$([ "$NOME_ENCONTRADO" == EINT ] && echo "EINT-${REPO_NAME_PROPERTIES}.properties" || echo "${NOME_ENCONTRADO}.properties")
+        
         if [[ -n "$NOME_ENCONTRADO" ]]; then
           DIST_PROPERTIES=($(find . -name "*.properties" -exec grep -h '^dist' {} +))
           echo "Todas as propriedades dist foram armazenadas no array:"
           printf "%s\n" "${DIST_PROPERTIES[@]}"
           for property in "${DIST_PROPERTIES[@]}"; do
              caminho=$(echo "$property" | sed 's/.*="\([^"]*\)".*/\1/')
-             echo "$caminho" 
-            done
-           else
-         echo "Nenhum nome de centro de custo encontrado."
+             echo "$caminho"
+             # Set new values in the properties file
+             sed -i 's/^dist.*/dist.newvalue=NEW_VALUE/' "$NAME_PROPERTIES"
+          done
+        else
+          echo "Nenhum nome de centro de custo encontrado."
         fi
         
 
