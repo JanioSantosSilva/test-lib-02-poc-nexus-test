@@ -29,7 +29,7 @@ jobs:
         NOME_ENCONTRADO=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$' || echo "$REPO_NAME" | grep -o 'EINT[^/]*')
         
         if [[ -n "$NOME_ENCONTRADO" ]]; then
-          DIST_PROPERTIES=($(find . -name "*.properties" -exec grep -h '^dist' {} +))
+          DIST_PROPERTIES=($(find . -name "test*.properties" -exec grep -h '^dist' {} +))
             echo "Todas as propriedades dist foram armazenadas no array:"
             printf "%s\n" "${DIST_PROPERTIES[@]}"
             for property in "${DIST_PROPERTIES[@]}"; do
@@ -38,6 +38,8 @@ jobs:
                 properties_file=$(find . -name "jar*.properties")
                 if [[ -n "$properties_file" ]]; then
                    sed -i "s|^dist.*|dist.newvalue=$caminho|" "$properties_file"
+                   echo "Updated properties file: $properties_file"
+                   echo "New value set for dist: dist.newvalue=$caminho"
                 else
                   echo "Arquivo other.properties não encontrado."
                 fi
