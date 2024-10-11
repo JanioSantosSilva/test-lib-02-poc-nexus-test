@@ -25,7 +25,21 @@ jobs:
         REPO_NAME=$(echo ${{ github.repository }} | cut -d'/' -f2 | cut -d'-' -f4-)
       
         echo "Nome do repositório: $REPO_NAME"
-
+        
+        NOME_ENCONTRADO=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$' || echo "$REPO_NAME" | grep -o 'EINT[^/]*')
+        
+        if [[ -n "$NOME_ENCONTRADO" ]]; then
+          DIST_PROPERTIES=($(find . -name "*.properties" -exec grep -h '^dist' {} +))
+          echo "Todas as propriedades dist foram armazenadas no array:"
+          printf "%s\n" "${DIST_PROPERTIES[@]}"
+          for property in "${DIST_PROPERTIES[@]}"; do
+             caminho=$(echo "$property" | sed 's/.*="\([^"]*\)".*/\1/')
+             echo "paths: $caminho"
+             echo "$caminho" >> dist.properties
+          done
+        else
+          echo "Nenhum nome de centro de custo encontrado."
+        fi
 
     - name: Upload arquivos para Nexus
       run: |
@@ -33,7 +47,7 @@ jobs:
         jarName="validate.jar" 
         jarNameWithCommit="${jarName%.jar}-${commitID}.jar" 
         echo "Fazendo upload do arquivo JAR antes do for: $jarNameWithCommit"
-        for dist in $(cat distribution.properties); do
+        for dist in $(cat dist.properties); do
           echo "Fazendo upload do arquivo JAR: $jarNameWithCommit"
         done
 
