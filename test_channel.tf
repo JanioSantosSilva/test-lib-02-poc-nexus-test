@@ -6,7 +6,7 @@ locals {
   channel_no_space = replace(local.channel_raw, " ", "")
 
   # Normalizar acentos
-  channel_normalized = replace(
+  channel_normalized = lower(replace(
     replace(
       replace(
        replace(
@@ -26,7 +26,7 @@ locals {
         "ô", "o"),
       "õ", "o"),
      "ú", "u"),
-     "ç", "c"
+     "ç", "c")
     )
 }
 
