@@ -43,6 +43,7 @@ locals {
                                       "Ó", "o"),
                                       "Ô", "o"),
                                       "Ú", "u")
+  )
 }
 
 output "normalized_channel" {
