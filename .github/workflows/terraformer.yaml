@@ -31,9 +31,10 @@ jobs:
         run: |
           echo "Normalized Channel: $(terraform output -raw normalized_channel)"
       
-      - name: List Environment Variables
+      - name: Load Environment Variables
         run: |
-         echo "CHANNEL: $(terraform output -raw channel_normalized)"
-         echo "SERVER: server"
-         echo "PATH_STARTEAM: startea,"
-         echo "PATH_DIST: dist"
+          source ./teste.env
+          echo "CHANNEL: $CHANNEL"
+          echo "SERVER: $SERVER"
+          echo "PATH_STARTEAM: $PATH_STARTEAM"
+          echo "PATH_DIST: $PATH_DIST"
