@@ -5,6 +5,8 @@ locals {
   # Normalizando o canal: remove espaços e acentos
   channel_normalized = replace(
     replace(
+     replace(
+      replace(
        replace(
         replace(
           replace(
@@ -29,6 +31,7 @@ locals {
                                     "í", "i"),
                                     "ó", "o"),
                                     "ô", "o"),
+                                    "õ", "o"),
                                     "ú", "u"),
                                     "ç", "c"),
                                     "Á", "A"),  # Mantém capitalização
@@ -36,9 +39,9 @@ locals {
                                     "Â", "A"),
                                     "Ã", "A"),
                                     "É", "E"),
-                                    "Ê", "E"
+                                    "Ê", "E")
     )
-                                  
+                                 
 }
 
 output "normalized_channel" {
