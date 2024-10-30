@@ -33,7 +33,7 @@ jobs:
      
       - name: Read values from test.env
         run: |
-          source tes.env
+          source test.env
           echo "CHANNEL=$CHANNEL"
           echo "SERVER=$SERVER"
           echo "PATH_STARTEAM=$PATH_STARTEAM"
