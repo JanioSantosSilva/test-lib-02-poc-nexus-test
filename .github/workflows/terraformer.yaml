@@ -31,12 +31,15 @@ jobs:
         run: |
           echo "Normalized Channel: $(terraform output -raw normalized_channel)"
      
-      - name: Load .env variables
+      - name: Convert and load variables
         run: |
-          # Carrega as variáveis do arquivo .env
-          set -o allexport
-          source ./tes.env
-          set +o allexport
+            # Converte o arquivo customizado para um formato padrão `.env`
+            sed -n 's/.*\(channel_raw =\|channel_no_space =\|channel_normalized =\|CHANNEL =\|SERVER =\|PATH_STARTEAM =\|PATH_DIST =\) *"//p' tes.env | sed 's/"//g' > simplified.env
+            
+            # Carrega as variáveis convertidas
+            set -o allexport
+            source ./simplified.env
+            set +o allexport
               
       - name: Print loaded variables
         run: |
