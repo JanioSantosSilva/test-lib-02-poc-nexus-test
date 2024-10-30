@@ -24,11 +24,9 @@ locals {
   }
 
   # Normalizando o canal: remove espaços e acentos
-  channel_normalized = local.channel_raw
-  channel_normalized = replace(local.channel_normalized, " ", "")  # Remove espaços
-
-  # Remove acentos usando um loop (Terraform não tem loops, mas você pode aplicar substituições)
-  channel_normalized = reduce(keys(local.accent_replacements), local.channel_normalized, 
+  channel_normalized = reduce(
+    keys(local.accent_replacements),
+    replace(local.channel_raw, " ", ""),  # Remove espaços
     (str, key) => replace(str, key, local.accent_replacements[key])
   )
 }
