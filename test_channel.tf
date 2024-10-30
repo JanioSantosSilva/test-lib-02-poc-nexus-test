@@ -4,9 +4,9 @@ locals {
   
 
   # Normalizando o canal: remove espaços e acentos
-  channel_normalized = regex_replace(
-    regex_replace(local.channel_raw, "[ ]", ""),  
-    "[áàâãäéèêëíìîïóòôõöúùûüçÁÀÂÃÄÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÇ]"
+  channel_normalized = replace(
+    replace(local.channel_raw, " ", ""),  
+    "[áàâãäéèêëíìîïóòôõöúùûüçÁÀÂÃÄÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÇ]", ""
   )
 }
 
