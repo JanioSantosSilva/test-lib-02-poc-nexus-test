@@ -34,7 +34,7 @@ jobs:
       - name: Load Environment Variables
         run: |
           set -a
-          source ./test.env
+          . ./test.env
           set +a
           echo "CHANNEL: $CHANNEL"
           echo "SERVER: $SERVER"
