@@ -1,0 +1,32 @@
+name: Terraform Test Channel Normalization
+
+on:
+  push:
+    branches:
+      - main  
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test_channel_normalization:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0  # Coloque a versão do Terraform que você deseja usar
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+
+      - name: Get Normalized Channel Output
+        run: |
+          echo "Normalized Channel: $(terraform output -raw normalized_channel)"

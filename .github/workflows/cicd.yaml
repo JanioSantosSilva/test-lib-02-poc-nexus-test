@@ -2,12 +2,7 @@ name: CI/CD Workflow
 
 on:
   workflow_dispatch:
-  push:
-      branches:
-        - main
-
-
-
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -57,7 +52,9 @@ jobs:
         for dist in $(cat dist.properties); do
           echo "Fazendo upload do arquivo JAR: $jarNameWithCommit"
         done
+ 
 
+         
 
   #NOME_ENCONTRADO=$(echo "$REPO_NAME" | tr '-' '\n' | grep -E '^[a-zA-Z0-9]{4}$' || echo "$REPO_NAME" | grep -o 'EINT[^/]*')
   #      NAME_PROPERTIES=$([ "$NOME_ENCONTRADO" == EINT ] && echo "EINT-${REPO_NAME_PROPERTIES}.properties" || echo "${NOME_ENCONTRADO}.properties")
