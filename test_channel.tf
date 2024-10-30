@@ -1,6 +1,6 @@
 locals {
-  # Definindo o valor do canal com acentos e espaços para teste
-  channel_raw = "Mobile Cartões"
+  # Definindo o valor do canal com acentos e espaços
+  channel_raw = payload.channel
   
   # Normalizando o canal: remove espaços e acentos
   channel_normalized = replace(
@@ -44,6 +44,10 @@ locals {
                                       "Ô", "o"),
                                       "Ú", "u")
   )
+}
+
+globals "terraform" "repository" "variables" {
+  CHANNEL = local.channel_normalized
 }
 
 output "normalized_channel" {
