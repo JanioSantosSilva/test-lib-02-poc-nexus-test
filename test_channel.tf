@@ -24,11 +24,11 @@ locals {
   }
 
   # Normalizando o canal: remove espaços e acentos
-  channel_normalized = reduce(
-    keys(local.accent_replacements),
-    replace(local.channel_raw, " ", ""),  # Remove espaços
-    (str, key) => replace(str, key, local.accent_replacements[key])
-  )
+    channel_normalized = reduce(
+      keys(local.accent_replacements),
+      replace(local.channel_raw, " ", ""),  # Remove espaços
+      (str, key) => replace(str, key, local.accent_replacements[key])
+    )
 }
 
 output "normalized_channel" {
