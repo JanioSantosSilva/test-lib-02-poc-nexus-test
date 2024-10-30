@@ -34,9 +34,5 @@ jobs:
       - name: Load Environment Variables
         run: |
           set -a
-          . ./test.env
-          set +a
-          echo "CHANNEL: $CHANNEL"
-          echo "SERVER: $SERVER"
-          echo "PATH_STARTEAM: $PATH_STARTEAM"
-          echo "PATH_DIST: $PATH_DIST"
+          source ./test.env
+          cat test.env
