@@ -1,6 +1,6 @@
 locals {
   # Definindo o valor do canal com acentos e espaços
-  channel_raw = "Mobile Cartões"
+  channel_raw = "Plataforma_Movel_Bradesco"
 
   # Remover espaços
   channel_no_space = replace(local.channel_raw, " ", "")
