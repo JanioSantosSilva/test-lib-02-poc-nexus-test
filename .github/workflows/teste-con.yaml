@@ -19,10 +19,9 @@ jobs:
         #    sudo apt-get update
         #    sudo add-apt-repository ppa:git-core/ppa -y
 
-        - name: Add Bitbucket remote
+        - name: Inicializar repositório Git e adicionar remoto Bitbucket
           run: |
-            git remote add bitbucket "starteam://pusrstem:Adminstemgp93:mz-cw-ap-984.corp.bradesco.com.br:49201/STEM/Hexa_starteam"
-
-        
-          
+            git init
+            git remote add bitbucket "https://pusrstem:Adminstemgp93@mz-cw-ap-984.corp.bradesco.com.br:49201/STEM/Hexa_starteam.git"
+            git fetch bitbucket
                
