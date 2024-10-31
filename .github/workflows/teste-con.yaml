@@ -14,15 +14,14 @@ jobs:
         - name: Checkout this repository
           uses: actions/checkout@v2
 
-        - name: Install Git
-          run: |
-            sudo apt-get update
-            sudo add-apt-repository ppa:git-core/ppa -y
-            sudo apt-get install -y git
+        #- name: Install Git
+        #  run: |
+        #    sudo apt-get update
+        #    sudo add-apt-repository ppa:git-core/ppa -y
 
         - name: Add Bitbucket remote
           run: |
-            git remote add bitbucket starteam://pusrstem:Adminstemgp93:mz-cw-ap-984.corp.bradesco.com.br:49201/STEM/Hexa_starteam
+            git remote add bitbucket "starteam://pusrstem:Adminstemgp93:mz-cw-ap-984.corp.bradesco.com.br:49201/STEM/Hexa_starteam"
 
         
           
