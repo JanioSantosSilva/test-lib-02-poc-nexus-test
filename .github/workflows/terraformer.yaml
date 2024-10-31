@@ -31,19 +31,13 @@ jobs:
         run: |
           echo "Normalized Channel: $(terraform output -raw normalized_channel)"
       
-      - name: Load Environment Variables
-        run: |
-          set -a
-          source ./test.env
-          cat test.env
-      
       - name: Set up environment variables
         run: |
-              source test.env
-              echo "CHANNEL=$CHANNEL"
-              echo "channel_no_space=$channel_no_space"
-              echo "channel_normalized=$channel_normalized 
-              
+            source test.env
+            echo "CHANNEL=$CHANNEL"
+            echo "channel_no_space=$channel_no_space"
+            echo "channel_normalized=$channel_normalized 
+
       - name: Validate environment variables
         run: |
           source test.env
