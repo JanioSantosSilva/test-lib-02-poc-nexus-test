@@ -36,3 +36,19 @@ jobs:
           set -a
           source ./test.env
           cat test.env
+      
+      - name: Set up environment variables
+        run: |
+              source test.env
+              echo "CHANNEL=$CHANNEL"
+              echo "channel_no_space=$channel_no_space"
+              echo "channel_normalized=$channel_normalized 
+              
+      - name: Validate environment variables
+        run: |
+          source test.env
+          if [ "$channel_normalized" != "nucleodeservicos" ]; then
+              echo "Validation failed: channel_normalized is not as expected"
+              exit 1
+          fi
+          echo "Validation passed: channel_normalized is as expected"
