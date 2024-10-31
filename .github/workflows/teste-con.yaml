@@ -14,11 +14,11 @@ jobs:
         - name: Checkout this repository
           uses: actions/checkout@v2
 
-        - name: Install StarTeam CLI and git-remote-starteam
+        - name: Install StarTeam CLI
           run: |
             sudo apt-get update
             sudo add-apt-repository ppa:git-core/ppa -y
-            sudo apt-get install -y git-remote-starteam
+            sudo apt-get install -y starteam
 
         - name: Add Bitbucket remote
           run: |
