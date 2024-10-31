@@ -1,12 +1,7 @@
 name: Terraform Test Channel Normalization
 
 on:
-  push:
-    branches:
-      - main  
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   test_channel_normalization:
