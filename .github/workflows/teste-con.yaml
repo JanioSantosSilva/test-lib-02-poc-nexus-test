@@ -15,14 +15,36 @@ jobs:
       uses: actions/checkout@v2
         
     - name: Install Git-StarTeam
-      id: install_starteam
       run: |
         echo "::group::Installing Git-StarTeam"
-        # Substitua o comando abaixo pela instalação correta do Git-StarTeam.
+        # Certifique-se de que snapd está instalado
         sudo apt-get update
-        sudo apt-get install -y git-starteam
+        sudo apt-get install -y snapd
+        # Instalar Git-StarTeam via Snap
+        sudo snap install git-starteam
         echo "::endgroup::"
-    #- name: Set up StarTeam CLI
+    
+    - name: Clone StarTeam repository
+      id: clone_starteam
+      env:
+       STARTEAM_URL: ${{ secrets.STARTEAM_URL }}
+       STARTEAM_USER: ${{ secrets.STARTEAM_USER }}
+       STARTEAM_PASSWORD: ${{ secrets.STARTEAM_PASSWORD }}
+      run: |
+       echo "::group::Cloning StarTeam repository"
+       git-starteam clone --url "${STARTEAM_URL}" --user "${STARTEAM_USER}" --password "${STARTEAM_PASSWORD}" --destination "./starteam_repo"
+       echo "::endgroup::
+    - name: Push to GitHub
+      id: push_github
+      env:
+       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+       echo "::group::Pushing to GitHub"
+       cd ./starteam_repo
+       git remote add github https://github.com/${{ github.repository }}.git
+       git push github main
+       echo "::endgroup::"
+    #-ame: Set up StarTeam CLI
     #  run: |
     #   echo "Installing StarTeam CLI"
     #   sudo apt-get update
