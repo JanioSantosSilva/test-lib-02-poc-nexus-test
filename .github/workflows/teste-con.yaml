@@ -13,11 +13,6 @@ jobs:
     steps:
     - name: Checkout this repository
       uses: actions/checkout@v2
-
-    - name: Download StarTeam Client
-      run: |
-        echo "Baixando o cliente StarTeam..."
-        wget https://downloads.microfocus.com/StarTeam/client/starteam-client-2024.deb
         
     - name: Install StarTeam Client
       run: |
