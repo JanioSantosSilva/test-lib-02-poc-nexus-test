@@ -14,17 +14,17 @@ jobs:
     - name: Checkout this repository
       uses: actions/checkout@v2
 
+    - name: Download StarTeam Client
+      run: |
+        echo "Baixando o cliente StarTeam..."
+        wget https://downloads.microfocus.com/StarTeam/client/starteam-client-2024.deb
+        
     - name: Install StarTeam Client
       run: |
-        # Comando para instalar o cliente StarTeam
-        # Altere o comando abaixo para o que for necessário para instalar o cliente
+        echo "Instalando o cliente StarTeam..."
         sudo apt-get update
-        sudo apt-get install -y starteam-client  # Exemplo, ajuste conforme necessário
-    
-    - name: Show StarTeam Client Version
-      run: |
-        # Altere o comando abaixo para o comando que exibe a versão do cliente StarTeam
-        starteam --version || { echo "Falha ao obter a versão do cliente StarTeam"; exit 1; }
+        sudo dpkg -i starteam-client-2024.deb || { echo "Falha ao instalar o cliente StarTeam"; exit 1; }
+        sudo apt-get install -f  # Corrige dependências, se necessário
     #- name: Set up StarTeam CLI
     #  run: |
     #   echo "Installing StarTeam CLI"
