@@ -16,6 +16,9 @@ jobs:
         
     - name: Set up StarTeam Git Client
       run: |
+        sudo add-apt-repository universe
+        sudo add-apt-repository multiverse
+        sudo apt update
         # Comandos para instalar e configurar o StarTeam Git Client
         sudo apt-get update
         sudo apt-get install -y starteam-git-client
