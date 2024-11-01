@@ -1,27 +1,44 @@
 name: Clone Repository
 
 on:
-    push:
-        branches:
-            - main
-    workflow_dispatch:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-    clone-repo:
-        runs-on: ubuntu-latest
+  clone-repo:
+    runs-on: ubuntu-latest
 
-        steps:
-        - name: Checkout this repository
-          uses: actions/checkout@v2
+    steps:
+    - name: Checkout this repository
+      uses: actions/checkout@v2
+    
+    - name: Set up StarTeam CLI
+      run: |
+       echo "Installing StarTeam CLI"
+       sudo apt-get update
+       sudo apt-get install -y stcmd # Ajuste conforme necessário para o CLI do StarTeam
 
-        #- name: Install Git
-        #  run: |
-        #    sudo apt-get update
-        #    sudo add-apt-repository ppa:git-core/ppa -y
-
-        - name: Inicializar repositório Git e adicionar remoto Bitbucket
-          run: |
-            git init
-            git remote add bitbucket "https://pusrstem:Adminstemgp93@mz-cw-ap-984.corp.bradesco.com.br:49201/STEM/Hexa_starteam.git"
-            git fetch bitbucket
-               
+    #- name: The migration
+    #  id: migrate
+    #  env:
+    #    BB_REPO_URL: https://${{ vars.MIGRATION_BB_USER }}:${{ secrets.MIGRATION_BB_PASSWORD }}@bitbucket.bradesco.com.br:8443/scm/${{ steps.inputs.outputs.PROJECT_KEY }}/${{ steps.inputs.outputs.BITBUCKET_REPOSITORY }}.git
+    #    MIGRATION_SOURCE: ${{ vars.MIGRATION_SOURCE }}
+    #    STARTEAM_URL_BASE: ${{ secrets.MIGRATION_STARTEAM }}
+    #  run: |
+    #    echo "::group::Migration log"
+    #    if [[ -n "${MIGRATION_SOURCE}" ]]; then
+    #     printf "\e[0;33m%s\e[0m\n" "Adding remote for GitLab with URL ${MIGRATION_SOURCE}"
+    #     git remote add bitbucket "${MIGRATION_SOURCE}"
+    #     git config credential."${MIGRATION_SOURCE}".username oauth
+    #     git config credential."${MIGRATION_SOURCE}".password '${{ secrets.MIGRATION_GL_TOKEN }}'
+    #    elif [[ -n "${STARTEAM_URL_BASE}" ]]; then
+    #     printf "\e[0;33m%s\e[0m\n" "Adding remote for StarTeam with URL ${STARTEAM_URL_BASE}"
+    #     git remote add bitbucket "${STARTEAM_URL_BASE}"
+    #    elif [[ -n "${BB_REPO_URL}" ]]; then
+    #     printf "\e[0;33m%s\e[0m\n" "Adding remote for Bitbucket with URL ${BB_REPO_URL}"
+    #     git remote add bitbucket "${BB_REPO_URL}"
+    # 
+    #    fi
+#
