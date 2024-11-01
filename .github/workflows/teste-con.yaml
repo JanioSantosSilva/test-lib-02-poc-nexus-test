@@ -14,15 +14,11 @@ jobs:
     - name: Checkout this repository
       uses: actions/checkout@v2
         
-    - name: Install Git-StarTeam
+    - name: Set up StarTeam Git Client
       run: |
-        echo "::group::Installing Git-StarTeam"
-        # Certifique-se de que snapd está instalado
+        # Comandos para instalar e configurar o StarTeam Git Client
         sudo apt-get update
-        sudo apt-get install -y snapd
-        # Instalar Git-StarTeam via Snap
-        sudo snap install git-starteam
-        echo "::endgroup::"
+        sudo apt-get install -y starteam-git-client
     
     - name: Clone StarTeam repository
       id: clone_starteam
