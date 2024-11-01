@@ -13,13 +13,24 @@ jobs:
     steps:
     - name: Checkout this repository
       uses: actions/checkout@v2
-    
-    - name: Set up StarTeam CLI
-      run: |
-       echo "Installing StarTeam CLI"
-       sudo apt-get update
-       sudo apt-get install -y stcmd # Ajuste conforme necessário para o CLI do StarTeam
 
+    - name: Install StarTeam Client
+      run: |
+        # Comando para instalar o cliente StarTeam
+        # Altere o comando abaixo para o que for necessário para instalar o cliente
+        sudo apt-get update
+        sudo apt-get install -y starteam-client  # Exemplo, ajuste conforme necessário
+    
+    - name: Show StarTeam Client Version
+      run: |
+        # Altere o comando abaixo para o comando que exibe a versão do cliente StarTeam
+        starteam --version || { echo "Falha ao obter a versão do cliente StarTeam"; exit 1; }
+    #- name: Set up StarTeam CLI
+    #  run: |
+    #   echo "Installing StarTeam CLI"
+    #   sudo apt-get update
+    #   sudo apt-get install -y stcmd # Ajuste conforme necessário para o CLI do StarTeam
+#
     #- name: The migration
     #  id: migrate
     #  env:
@@ -42,3 +53,28 @@ jobs:
     # 
     #    fi
 #
+    #- name: Sincronizar com StarTeam e Push para Bitbucket
+    #  id: sync_starteam_to_git
+    #  env:
+    #    STARTEAM_URL_BASE: starteam://teste1:Adtes:mz-cw-ap-984.corp.bra.com.br:49201/TES/Hexa_TES
+    #    BITBUCKET_REPO_URL: https://${{ vars.MIGRATION_BB_USER }}:${{ secrets.MIGRATION_BB_PASSWORD }}@bitbucket.bradesco.com.br:8443/scm/${{ steps.inputs.outputs.PROJECT_KEY }}/${{ steps.inputs.outputs.BITBUCKET_REPOSITORY }}.git
+    #  run: |
+    #    echo "::group::Iniciando sincronização com StarTeam"
+    #    
+    #    # Sincronizar StarTeam para um repositório Git local
+    #    if [[ -n "${STARTEAM_URL_BASE}" ]]; then
+    #      printf "\e[0;33m%s\e[0m\n" "Sincronizando StarTeam para repositório Git local"
+    #      git-starteam sync --source "${STARTEAM_URL_BASE}" --destination "./local_git_repo"
+    #      cd ./local_git_repo
+    #      
+    #      # Adicionar Bitbucket como remoto
+    #      printf "\e[0;33m%s\e[0m\n" "Adicionando remoto para Bitbucket com URL ${BITBUCKET_REPO_URL}"
+    #      git remote add bitbucket "${BITBUCKET_REPO_URL}"
+    #      
+    #      # Fazer o push para o Bitbucket
+    #      printf "\e[0;33m%s\e[0m\n" "Enviando as alterações para o Bitbucket"
+    #      git push bitbucket main  # substitua 'main' pelo nome da branch correta
+    #    else
+    #      echo "URL do StarTeam não foi especificado corretamente."
+    #    fi
+    # 
