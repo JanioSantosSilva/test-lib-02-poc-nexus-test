@@ -14,16 +14,22 @@ jobs:
     - name: Checkout this repository
       uses: actions/checkout@v2
         
-    - name: Set up StarTeam Git Client
+    - name: Set up Git for Windows (Git Bash)
       run: |
-        # Baixe o instalador do StarTeam Cross-Platform Client
-        wget https://admhelp.microfocus.com/starteam/en/latest/online/Content/Install-Guide/Installing%20StarTeam%20Cross-Platform%20Client.html -O starteam-integrations.tar.gz
-        
-        # Verifique o tipo de arquivo
-        file starteam-integrations.tar.gz
-    
-        # Extraia o pacote sem a opção -z se não for um arquivo gzip
-        tar -xf starteam-integrations.tar.gz
+        Invoke-WebRequest -Uri https://git-scm.com/download/win -OutFile git-installer.exe
+        Start-Process -FilePath git-installer.exe -ArgumentList '/SILENT' -Wait
+        Remove-Item git-installer.exe
+      
+    - name: Verify Git Bash Installation
+      run: |
+        git --version
+        bash --version
+    #- name: Set up StarTeam Git Client
+    #  run: |
+    #    # Baixe o instalador do StarTeam Cross-Platform Client
+    #    wget https://admhelp.microfocus.com/starteam/en/latest/online/Content/Install-Guide/Installing%20StarTeam%20Cross-Platform%20Client.html -O starteam-integrations.tar.gz
+    #    
+  
     #-ame: Set up StarTeam CLI
     #  run: |
     #   echo "Installing StarTeam CLI"
