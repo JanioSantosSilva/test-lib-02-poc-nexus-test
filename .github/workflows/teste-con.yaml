@@ -14,14 +14,13 @@ jobs:
     - name: Checkout this repository
       uses: actions/checkout@v2
         
-      
-    - name: Set up Git for Windows (Git Bash)
+
+    - name: Update and install Git
       run: |
-        Invoke-WebRequest -Uri https://git-scm.com/download/win -OutFile git-installer.exe
-        Start-Process -FilePath git-installer.exe -ArgumentList '/SILENT' -Wait
-        Remove-Item git-installer.exe
-      
-    - name: Verify Git Bash Installation
+        sudo apt-get update
+        sudo apt-get install -y git
+
+    - name: Verify Git and Bash Versions
       run: |
         git --version
         bash --version
