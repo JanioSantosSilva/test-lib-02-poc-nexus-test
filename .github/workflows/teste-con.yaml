@@ -7,24 +7,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+    - name: Update packages
+      run: sudo apt-get update --fix-missing
 
-    - name: Set up Java
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'zulu'
-        java-version: '8.0.192'
+    - name: Install telnet and ssh
+      run: sudo apt-get install -y telnet openssh-client
+        
+    
 
-    #- name: Extract StarTeam package
-    #  run: |
-    #    tar -xzf path/to/starteam-package.tar.gz -C /path/to/extract
-#
-    #- name: Install StarTeam Client
-    #  run: |
-    #    cd /path/to/extract/bin
-    #    ./setup
-#
+
     #- name: Configure StarTeam for Git
     #  run: |
     #    export STARTEAM_HOME=/path/to/extract
