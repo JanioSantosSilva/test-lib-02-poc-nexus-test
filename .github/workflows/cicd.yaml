@@ -29,7 +29,8 @@ jobs:
        echo "Minha alteração adicional via echo" >> mensagem.txt
        git add .
        git commit -m "Migrando repositório Github"
-       git push --force origin main
+       git push --force https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git main
+
       
 
 
