@@ -6,96 +6,32 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      actions: read
-      pull-requests: write
+    permissions: write-all
+    
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Create Personal Access Token (PAT)
-      id: create_pat
-      env:
-       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: The migration
+      id: migrate
       run: |
-       echo "Creating a Personal Access Token (PAT) with necessary permissions"
-       echo "${GITHUB_TOKEN}" | gh auth login --with-token
-       unset GITHUB_TOKEN
-       gh auth setup-git
-       PAT=$(gh auth token)
-       echo "PAT=${PAT}" >> $GITHUB_ENV
+       git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
+       cd repo-teste
+       git config user.name "JanioSantosSilva"
+       git config user.email "jose.j.santos.silva@avanade.com"
+       git checkout -b feature/migration
+       git remote rename origin upstream
+       git remote -v
+       git remote add origin https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git
+       git remote -v
+       echo "Minha alteração adicional via echo" >> mensagem.txt
+       git add .
+       git status
+       git commit -m "Migrando repositório Github"
+       git push origin feature/migration
 
-    #- name: The migration
-    #  id: migrate
-    #  env:
-    #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   PAT: ${{ steps.create_pat.outputs.PAT }}
-    #  run: |
-    #   git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
-    #   cd repo-teste
-    #   git config user.name "JanioSantosSilva"
-    #   git config user.email "jose.j.santos.silva@avanade.com"
-    #   git checkout -b feature/migration
-    #   git remote rename origin upstream
-    #   git remote -v
-    #   git remote add origin "https://${{ env.PAT }}@github.com/JanioSantosSilva/nuget-package.git"
-    #   git remote -v
-    #   echo "Minha alteração adicional via echo" >> mensagem.txt
-    #   git add .
-    #   git status
-    #   git commit -m "Migrando repositório Github"
-    #   git push origin feature/migration
-#
-    ##- name: The migration
-    ##  id: migrate
-    ##  run: |
-    ##   git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
-    ##   cd repo-teste
-    #   git config user.name "JanioSantosSilva"
-    #   git config user.email "jose.j.santos.silva@avanade.com"
-    #   git checkout -b feature/migration
-    #   git remote rename origin upstream
-    #   git remote -v
-    #   git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
-    #   git remote -v
-    #   echo "Minha alteração adicional via echo" >> mensagem.txt
-    #   git add .
-    #   git status
-    #   git commit -m "Migrando repositório Github"
-    #   git push origin feature/migration
-
-      
-     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 
