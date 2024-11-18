@@ -14,14 +14,14 @@ jobs:
 
 
 
-    - name: The migration Starteam
-      id: migrate-starteam
+    - name: The migration
+      id: migrate
       run: |
        git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
        cd repo-teste
        ls -a
        git branch
-       git remote set-url origin "https://github.com/JanioSantosSilva/nuget-package.git"
+       git remote set-url origin "https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
        git config --global user.name "JanioSantosSilva"
        git config --global user.email "jose.j.santos.silva@avanade.com"
        echo "Minha alteração adicional via echo" >> mensagem.txt
