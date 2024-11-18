@@ -1,7 +1,7 @@
 name: CI/CD Workflow
 
 on:
-  workflow_dispatch:
+  [push]
   
 jobs:
   build:
@@ -17,9 +17,9 @@ jobs:
     - name: The migration Starteam
       id: migrate-starteam
       run: |
-       export PATH=$PATH:"${{github.workspace}}/starteam-en-17.0.3-java/lib"
-       git clone "https://github.com/JanioSantosSilva/docker-image.git"
-       ls
+       git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
+       cd repo-teste
+       ls -a
     #cd Hexa_starteam
     #git branch
     #git checkout -b starteam

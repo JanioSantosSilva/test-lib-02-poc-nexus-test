@@ -1,6 +1,7 @@
 name: Install StarTeam Client
 
-on: [push]
+on:
+  workflow_dispatch:
 
 jobs:
   install:
