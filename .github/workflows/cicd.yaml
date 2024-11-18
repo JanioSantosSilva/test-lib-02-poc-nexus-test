@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: write
 
     steps:
     - name: Checkout repository
@@ -32,7 +33,7 @@ jobs:
        git checkout -b feature/migration
        git branch
        git remote -v
-       git remote set-url origin "https://x-access-token:${{ secrets.PAT }}@github.com/JanioSantosSilva/nuget-package.git"
+       git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
        git config credential.helper store
        git config user.name "JanioSantosSilva"
        git config user.email "jose.j.santos.silva@avanade.com"
