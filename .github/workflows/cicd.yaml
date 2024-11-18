@@ -9,41 +9,31 @@ jobs:
     permissions:
       contents: write
       actions: read
+      pull-requests: write
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-
-    - name: Authenticate GitHub CLI
-      run: |
-       gh auth login --with-token <<< ${{ secrets.GITHUB_TOKEN }}  # Usa o GITHUB_TOKEN para login na CLI
-       echo "Login feito com sucesso"
-
-    - name: Set Personal Access Token (PAT)
-      id: generate_token
-      run: |
-        echo "Token gerado: ${{ secrets.GITHUB_TOKEN }}"
 
     - name: The migration
       id: migrate
       run: |
        git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
        cd repo-teste
-       ls -a
+       git config user.name "JanioSantosSilva"
+       git config user.email "jose.j.santos.silva@avanade.com"
+       git config credential.helper store
        git checkout -b feature/migration
        git branch
        git remote -v
-       git remote set-url origin "https://x-access-token:${{ secrets.PATH }}@github.com/JanioSantosSilva/nuget-package.git"
-       git config credential.helper store
-       git config user.name "JanioSantosSilva"
-       git config user.email "jose.j.santos.silva@avanade.com"
+       git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
        echo "Minha alteração adicional via echo" >> mensagem.txt
        git add .
        git status
        git commit -m "Migrando repositório Github"
        git push origin feature/migration
 
-      #git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
+      
      
 
 
