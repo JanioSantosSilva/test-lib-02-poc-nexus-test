@@ -13,24 +13,36 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Authenticate GitHub CLI
+      run: |
+       gh auth login --with-token <<< ${{ secrets.GITHUB_TOKEN }}  # Usa o GITHUB_TOKEN para login na CLI
+       echo "Login feito com sucesso"
 
+    - name: Generate Personal Access Token (PAT)
+      id: generate_token
+      run: |
+        # Criação do PAT com permissões adequadas para push
+        gh api -X POST /user/tokens --input '{"name": "token-tempo-execucao", "permissions": {"contents": "write"}}' > token.json
+        export TOKEN=$(jq -r '.token' token.json)  # Armazenando o token gerado
 
     - name: The migration
       id: migrate
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ steps.generate_token.outputs.TOKEN }} 
       run: |
        git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
        cd repo-teste
        ls -a
        git branch
-       git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
+       git remote set-url origin "https://x-access-token:${{ steps.generate_token.outputs.TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
        git config --global user.name "JanioSantosSilva"
        git config --global user.email "jose.j.santos.silva@avanade.com"
        echo "Minha alteração adicional via echo" >> mensagem.txt
        git add .
        git commit -m "Migrando repositório Github"
        git push --force origin main
+
+      #git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
 
       
 
