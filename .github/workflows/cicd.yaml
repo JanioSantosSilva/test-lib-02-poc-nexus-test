@@ -20,17 +20,11 @@ jobs:
     - name: Create Personal Access Token (PAT)
       id: create_pat
       run: |
-       echo "Creating a Personal Access Token (PAT) with necessary permissions"
-       curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-       -X POST \
-       -H "Accept: application/vnd.github.v3+json" \
-       https://api.github.com/authorizations \
-       -d '{"scopes":["repo", "workflow"], "note":"CI/CD Workflow Token"}' \
-       > pat.json
-       cat pat.json
-       echo "PAT created successfully"
-       PAT=$(jq -r '.token' pat.json)
-       echo "PAT=${PAT}" >> $GITHUB_ENV
+        echo "Creating a Personal Access Token (PAT) with necessary permissions"
+        gh auth login --with-token < ${{ secrets.GITHUB_TOKEN }}
+        gh auth refresh -h github.com -s repo,workflow
+        PAT=$(gh auth token)
+        echo "PAT=${PAT}" >> $GITHUB_ENV
 
     #- name: The migration
     #  id: migrate
