@@ -21,7 +21,7 @@ jobs:
       id: create_pat
       run: |
         echo "Creating a Personal Access Token (PAT) with necessary permissions"
-        gh auth login --with-token < ${{ secrets.GITHUB_TOKEN }}
+        echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
         gh auth refresh -h github.com -s repo,workflow
         PAT=$(gh auth token)
         echo "PAT=${PAT}" >> $GITHUB_ENV
