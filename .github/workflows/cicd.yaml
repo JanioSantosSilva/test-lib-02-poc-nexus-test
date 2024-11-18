@@ -19,12 +19,14 @@ jobs:
     
     - name: Create Personal Access Token (PAT)
       id: create_pat
+      env:
+       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        echo "Creating a Personal Access Token (PAT) with necessary permissions"
-        echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-        gh auth refresh -h github.com -s repo,workflow
-        PAT=$(gh auth token)
-        echo "PAT=${PAT}" >> $GITHUB_ENV
+       echo "Creating a Personal Access Token (PAT) with necessary permissions"
+       echo "${GITHUB_TOKEN}" | gh auth login --with-token
+       gh auth setup-git
+       PAT=$(gh auth token)
+       echo "PAT=${PAT}" >> $GITHUB_ENV
 
     #- name: The migration
     #  id: migrate
