@@ -21,7 +21,6 @@ jobs:
        git config user.name "JanioSantosSilva"
        git config user.email "jose.j.santos.silva@avanade.com"
        git checkout -b feature/migration
-       git remote rename origin upstream
        git remote -v
        git remote set-url origin https://${{secrets.GITHUB_TOKEN}}@github.com/JanioSantosSilva/nuget-package.git
        git remote -v
