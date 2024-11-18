@@ -26,7 +26,7 @@ jobs:
        git checkout -b feature/migration
        git branch
        git remote -v
-       git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
+       git remote set-url origin "https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
        echo "Minha alteração adicional via echo" >> mensagem.txt
        git add .
        git status
