@@ -20,9 +20,11 @@ jobs:
        git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
        cd repo-teste
        ls -a
+       git branch
        git remote set-url origin "https://github.com/JanioSantosSilva/nuget-package.git"
        git config --global user.name "JanioSantosSilva"
        git config --global user.email "jose.j.santos.silva@avanade.com"
+       echo "Minha alteração adicional via echo" >> mensagem.txt
        git add .
        git commit -m "Migrando repositório Github"
        git push --force origin main
