@@ -21,10 +21,11 @@ jobs:
     - name: Generate Personal Access Token (PAT)
       id: generate_token
       run: |
-         # Criação do PAT com permissões adequadas para push, usando a flag -d para enviar o JSON como dados
-         gh api -X POST /user/tokens -d '{"name": "token-tempo-execucao", "permissions": {"contents": "write"}}' > token.json
-         export TOKEN=$(jq -r '.token' token.json)  # Armazenando o token gerado
-         echo "Token gerado: $TOKEN"  # Exibe o token para verificação (não deve ser usado em produção)
+        # Criar o arquivo JSON com o PAT
+        echo '{"name": "token-tempo-execucao", "permissions": {"contents": "write"}}' > pat_payload.json
+        
+        # Criação do PAT com permissões adequadas para push
+        gh api -X POST /user/tokens --input pat_payload.json > token.json
 
     - name: The migration
       id: migrate
