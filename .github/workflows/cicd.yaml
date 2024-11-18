@@ -23,29 +23,30 @@ jobs:
       run: |
         curl -X POST https://api.github.com/user/tokens \
           -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-          -d '{"name": "token-tempo-execucao", "permissions": {"contents": "write"}}' \
+          -d '{"name": "token", "permissions": {"contents": "write"}}' \
           -o token.json
+        cat token.json
         export TOKEN=$(jq -r '.token' token.json)
         echo "Token gerado: $TOKEN"
 
-    - name: The migration
-      id: migrate
-      env:
-        GITHUB_TOKEN: ${{ steps.generate_token.outputs.TOKEN }} 
-      run: |
-       git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
-       cd repo-teste
-       ls -a
-       git branch
-       git remote set-url origin "https://x-access-token:${{ steps.generate_token.outputs.TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
-       git config --global user.name "JanioSantosSilva"
-       git config --global user.email "jose.j.santos.silva@avanade.com"
-       echo "Minha alteração adicional via echo" >> mensagem.txt
-       git add .
-       git commit -m "Migrando repositório Github"
-       git push --force origin main
-
-      #git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
+    #- name: The migration
+    #  id: migrate
+    #  env:
+    #    GITHUB_TOKEN: ${{ steps.generate_token.outputs.TOKEN }} 
+    #  run: |
+    #   git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
+    #   cd repo-teste
+    #   ls -a
+    #   git branch
+    #   git remote set-url origin "https://x-access-token:${{ steps.generate_token.outputs.TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
+    #   git config --global user.name "JanioSantosSilva"
+    #   git config --global user.email "jose.j.santos.silva@avanade.com"
+    #   echo "Minha alteração adicional via echo" >> mensagem.txt
+    #   git add .
+    #   git commit -m "Migrando repositório Github"
+    #   git push --force origin main
+#
+    #  #git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
 
       
 
