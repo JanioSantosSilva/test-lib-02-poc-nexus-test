@@ -14,24 +14,42 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-
+    
     - name: The migration
       id: migrate
       run: |
-       git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
-       cd repo-teste
-       git config user.name "JanioSantosSilva"
-       git config user.email "jose.j.santos.silva@avanade.com"
-       git checkout -b feature/migration
-       git remote rename origin upstream
-       git remote -v
-       git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
-       git remote -v
-       echo "Minha alteração adicional via echo" >> mensagem.txt
-       git add .
-       git status
-       git commit -m "Migrando repositório Github"
-       git push origin feature/migration
+        git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
+        cd repo-teste
+        git config user.name "JanioSantosSilva"
+        git config user.email "jose.j.santos.silva@avanade.com"
+        git checkout -b feature/migration
+        git remote rename origin upstream
+        git remote -v
+        git remote add origin "https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
+        git remote -v
+        echo "Minha alteração adicional via echo" >> mensagem.txt
+        git add .
+        git status
+        git commit -m "Migrando repositório Github"
+        git push origin feature/migration
+
+    #- name: The migration
+    #  id: migrate
+    #  run: |
+    #   git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
+    #   cd repo-teste
+    #   git config user.name "JanioSantosSilva"
+    #   git config user.email "jose.j.santos.silva@avanade.com"
+    #   git checkout -b feature/migration
+    #   git remote rename origin upstream
+    #   git remote -v
+    #   git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
+    #   git remote -v
+    #   echo "Minha alteração adicional via echo" >> mensagem.txt
+    #   git add .
+    #   git status
+    #   git commit -m "Migrando repositório Github"
+    #   git push origin feature/migration
 
       
      
