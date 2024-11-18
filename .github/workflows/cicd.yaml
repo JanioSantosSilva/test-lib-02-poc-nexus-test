@@ -31,12 +31,14 @@ jobs:
        ls -a
        git checkout -b feature/migration
        git branch
+       git remote -v
        git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
-       git config credential.helper
+       git config credential.helper store
        git config user.name "JanioSantosSilva"
        git config user.email "jose.j.santos.silva@avanade.com"
        echo "Minha alteração adicional via echo" >> mensagem.txt
        git add .
+       git status
        git commit -m "Migrando repositório Github"
        git push origin feature/migration
 
