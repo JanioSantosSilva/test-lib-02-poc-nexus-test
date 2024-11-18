@@ -20,18 +20,13 @@ jobs:
        git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
        cd repo-teste
        ls -a
-    #cd Hexa_starteam
-    #git branch
-    #git checkout -b starteam
-    #git branch
-    #ls
-    #git remote set-url origin ""
-    #git config --global user.name 'josejanio-silva_bradesco'
-    #git config --global user.email "josejanio.silva@bradesco.com.br"
-    #echo "Repositório STARTEAM clonado com sucesso em $(date) " > clone-log.txt
-    #git add .
-    #git commit -m "feat starteam"
-    #git push --force origin starteam
+       git remote set-url origin "https://github.com/JanioSantosSilva/nuget-package.git"
+       git config --global user.name "JanioSantosSilva"
+       git config --global user.email "jose.j.santos.silva@avanade.com"
+       git add .
+       git commit -m "Migrando repositório Github"
+       git push --force origin main
+      
 
 
 
