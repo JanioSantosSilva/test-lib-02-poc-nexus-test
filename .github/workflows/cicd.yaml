@@ -16,6 +16,8 @@ jobs:
 
     - name: The migration
       id: migrate
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
        git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
        cd repo-teste
