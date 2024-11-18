@@ -22,7 +22,7 @@ jobs:
        git config user.email "jose.j.santos.silva@avanade.com"
        git checkout -b feature/migration
        git remote -v
-       git remote set-url origin https://${{secrets.GITHUB_TOKEN}}@github.com/JanioSantosSilva/nuget-package.git
+       git remote set-url origin https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/JanioSantosSilva/nuget-package.git
        git remote -v
        echo "Minha alteração adicional via echo" >> mensagem.txt
        git add .
