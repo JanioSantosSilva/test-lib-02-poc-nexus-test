@@ -23,13 +23,13 @@ jobs:
        cd repo-teste
        ls -a
        git branch
-       git remote set-url origin "https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
+       git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
        git config --global user.name "JanioSantosSilva"
        git config --global user.email "jose.j.santos.silva@avanade.com"
        echo "Minha alteração adicional via echo" >> mensagem.txt
        git add .
        git commit -m "Migrando repositório Github"
-       git push --force https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git main
+       git push --force origin main
 
       
 
