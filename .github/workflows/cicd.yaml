@@ -21,12 +21,8 @@ jobs:
     - name: Generate Personal Access Token (PAT)
       id: generate_token
       run: |
-        curl -X POST https://api.github.com/user/tokens \
-          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-          -d '{"name": "token", "permissions": {"contents": "write"}}' \
-          -o token.json
-        cat token.json
-        export TOKEN=$(jq -r '.token' token.json)
+        gh auth refresh -h github.com -s write:packages,read:packages
+        export TOKEN=${{ secrets.GITHUB_TOKEN }}
         echo "Token gerado: $TOKEN"
 
     #- name: The migration
