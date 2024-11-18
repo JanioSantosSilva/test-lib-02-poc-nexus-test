@@ -26,7 +26,7 @@ jobs:
        git checkout -b feature/migration
        git remote rename origin upstream
        git remote -v
-       git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git
+       git remote add origin https://github.com/JanioSantosSilva/nuget-package.git
        git remote -v
        echo "Minha alteração adicional via echo" >> mensagem.txt
        git add .
