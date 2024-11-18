@@ -18,12 +18,10 @@ jobs:
        gh auth login --with-token <<< ${{ secrets.GITHUB_TOKEN }}  # Usa o GITHUB_TOKEN para login na CLI
        echo "Login feito com sucesso"
 
-    - name: Generate Personal Access Token (PAT)
+    - name: Set Personal Access Token (PAT)
       id: generate_token
       run: |
-        gh auth refresh -h github.com -s write:packages,read:packages
-        export TOKEN=${{ secrets.GITHUB_TOKEN }}
-        echo "Token gerado: $TOKEN"
+        echo "Token gerado: ${{ secrets.GITHUB_TOKEN }}"
 
     #- name: The migration
     #  id: migrate
