@@ -21,11 +21,12 @@ jobs:
     - name: Generate Personal Access Token (PAT)
       id: generate_token
       run: |
-        # Criar o arquivo JSON com o PAT
-        echo '{"name": "token-tempo-execucao", "permissions": {"contents": "write"}}' > pat_payload.json
-        
-        # Criação do PAT com permissões adequadas para push
-        gh api -X POST /user/tokens --input pat_payload.json > token.json
+        curl -X POST https://api.github.com/user/tokens \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -d '{"name": "token-tempo-execucao", "permissions": {"contents": "write"}}' \
+          -o token.json
+        export TOKEN=$(jq -r '.token' token.json)
+        echo "Token gerado: $TOKEN"
 
     - name: The migration
       id: migrate
