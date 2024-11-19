@@ -33,7 +33,7 @@ jobs:
         git config --global user.email "jose.j.santos.silva@avanade.com"
 
         # Adiciona o remoto para o novo repositório
-        git config remote.origin.url https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git
+        git remote add starteam https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git
         
         # Validação de remotos
         git remote -v
@@ -45,7 +45,7 @@ jobs:
         git commit -m "Migrando repositório Github"
 
         # Push para o repositório remoto
-        git push --force origin feat
+        git push --force starteam feat
 
   # Configurações de usuário
   #git config --global user.name "JanioSantosSilva"
