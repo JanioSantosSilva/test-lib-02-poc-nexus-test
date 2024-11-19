@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions: 
-       contents: write
+      contents: write
 
     steps:
     - name: Checkout repository
@@ -16,21 +16,35 @@ jobs:
     - name: The migration
       id: migrate
       run: |
-       export GIT_TRACE=1
-       export GIT_CURL_VERBOSE=1
-       git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
-       cd repo-teste
-       git checkout -b feat || git checkout feat
-       git remote -v
-       git config user.name "JanioSantosSilva"
-       git config user.email "jose.j.santos.silva@avanade.com"
-       git remote add starteam https://${{secrets.GITHUB_TOKEN}}@github.com/JanioSantosSilva/nuget-package.git
-       git remote -v
-       echo "Minha alteração adicional via echo" >> mensagem.txt
-       git add .
-       git status
-       git commit -m "Migrando repositório Github"
-       git push --force origin feat
+   
+        # Clone o repositório de origem
+        git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
+        cd repo-teste
+
+        # Criação ou verificação de branch
+        git checkout -b feat || git checkout feat
+
+        git remote -v
+        
+        # Configurações de usuário
+        git config user.name "JanioSantosSilva"
+        git config user.email "jose.j.santos.silva@avanade.com"
+
+        # Adiciona o remoto para o novo repositório
+        git remote add validate https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git
+        
+        # Validação de remotos
+        git remote -v
+
+        # Modificação de arquivo e commit
+        echo "Minha alteração adicional via echo" >> mensagem.txt
+        git add .
+        git status
+        git commit -m "Migrando repositório Github"
+
+        # Push para o repositório remoto
+        git push --force origin feat
+
 
     #export GIT_TRACE=1
     #export GIT_CURL_VERBOSE=1
