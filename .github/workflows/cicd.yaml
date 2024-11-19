@@ -27,8 +27,8 @@ jobs:
         git remote -v
         
         # Configurações de usuário
-        git config user.name "JanioSantosSilva"
-        git config user.email "jose.j.santos.silva@avanade.com"
+        git config --global user.name "JanioSantosSilva"
+        git config --global user.email "jose.j.santos.silva@avanade.com"
 
         # Adiciona o remoto para o novo repositório
         git remote add starteam https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git
