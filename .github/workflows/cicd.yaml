@@ -7,7 +7,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions: write-all
-    
 
     steps:
     - name: Checkout repository
@@ -16,19 +15,22 @@ jobs:
     - name: The migration
       id: migrate
       run: |
+       export GIT_TRACE=1
+       export GIT_CURL_VERBOSE=1
        git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
        cd repo-teste
+       git checkout -b feat || git checkout feat
        git config user.name "JanioSantosSilva"
        git config user.email "jose.j.santos.silva@avanade.com"
-       git checkout -b feature/migration
+       git remote remove origin || true
        git remote -v
-       git remote set-url origin https://x-access-token:${{secrets.GITHUB_TOKEN}}@github.com/JanioSantosSilva/nuget-package.git
+       git remote add origin https://${{secrets.GITHUB_TOKEN}}@github.com/JanioSantosSilva/nuget-package.git
        git remote -v
        echo "Minha alteração adicional via echo" >> mensagem.txt
        git add .
        git status
        git commit -m "Migrando repositório Github"
-       git push origin feature/migration
+       git push --force origin feat
 
     
 
