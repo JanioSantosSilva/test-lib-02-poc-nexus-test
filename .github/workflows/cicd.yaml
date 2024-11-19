@@ -45,7 +45,7 @@ jobs:
         git commit -m "Migrando repositório Github"
 
         # Push para o repositório remoto
-        git push --force starteam feat
+        git push --force feat
 
   # Configurações de usuário
   #git config --global user.name "JanioSantosSilva"
