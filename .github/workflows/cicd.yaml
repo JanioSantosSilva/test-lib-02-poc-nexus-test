@@ -48,6 +48,7 @@ jobs:
         git status
         git commit -m "Migrando repositório Github"
         ls -a
+        cat .git
 
     #    # Push para o repositório remoto
     #    git push starteam feat
