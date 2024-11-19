@@ -44,7 +44,7 @@ jobs:
         git commit -m "Migrando repositório Github"
 
         # Push para o repositório remoto
-        git push --force https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git feat
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git feat
 #git push --force starteam feat
     # Adiciona o remoto para o novo repositório
         #git remote add starteam https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git
