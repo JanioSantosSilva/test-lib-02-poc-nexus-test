@@ -19,9 +19,7 @@ jobs:
         echo "[credential]" > ~/.gitconfig
         echo "  helper = store --file=/tmp/.git-credentials" >> ~/.gitconfig
         echo "https://username:${{ secrets.GITHUB_TOKEN }}@github.com" > /tmp/.git-credentials
-        # Configuração do nome e email do Git
-        git config --global user.name "JanioSantosSilva"
-        git config --global user.email "jose.j.santos.silva@avanade.com"
+        
   
     - name: The migration
       id: migrate
