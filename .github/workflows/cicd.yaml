@@ -24,30 +24,31 @@ jobs:
       run: |
         git config --global url."https://${GH_TOKEN}@github.com/".insteadOf "https://github.com/"
 
-    #- name: The migration
-    #  id: migrate
-    #  run: |
-    #    # Clone o repositório de origem
-    #    git clone "https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/docker-image.git" repo-teste
-    #    cd repo-teste
-#
-    #    # Criação ou verificação de branch
-    #    git checkout -b feat || git checkout feat
-#
-    #    git remote -v
-    #    
-    #    # Configuração do nome e email do Git
-    #    git config --global user.name "JanioSantosSilva"
-    #    git config --global user.email "jose.j.santos.silva@avanade.com"
-    #   
-    #    git remote add starteam https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git
-    #    git remote -v
-    #    # Modificação de arquivo e commit
-    #    echo "Minha alteração adicional via echo" >> mensagem.txt
-    #    git add .
-    #    git status
-    #    git commit -m "Migrando repositório Github"
-#
+    - name: The migration
+      id: migrate
+      run: |
+        # Clone o repositório de origem
+        git clone "https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/docker-image.git" repo-teste
+        cd repo-teste
+
+        # Criação ou verificação de branch
+        git checkout -b feat || git checkout feat
+
+        git remote -v
+        
+        # Configuração do nome e email do Git
+        git config --global user.name "JanioSantosSilva"
+        git config --global user.email "jose.j.santos.silva@avanade.com"
+       
+        git remote add starteam https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git
+        git remote -v
+        # Modificação de arquivo e commit
+        echo "Minha alteração adicional via echo" >> mensagem.txt
+        git add .
+        git status
+        git commit -m "Migrando repositório Github"
+        ls -a
+
     #    # Push para o repositório remoto
     #    git push starteam feat
 #git push --force starteam feat
