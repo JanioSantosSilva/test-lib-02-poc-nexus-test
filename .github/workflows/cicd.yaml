@@ -6,7 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions: 
+       contents: write
 
     steps:
     - name: Checkout repository
@@ -23,7 +24,6 @@ jobs:
        git config user.name "JanioSantosSilva"
        git config user.email "jose.j.santos.silva@avanade.com"
        git remote remove origin || true
-       git remote -v
        git remote add origin https://${{secrets.GITHUB_TOKEN}}@github.com/JanioSantosSilva/nuget-package.git
        git remote -v
        echo "Minha alteração adicional via echo" >> mensagem.txt
