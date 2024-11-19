@@ -21,10 +21,10 @@ jobs:
        git clone "https://github.com/JanioSantosSilva/docker-image.git" repo-teste
        cd repo-teste
        git checkout -b feat || git checkout feat
+       git remote -v
        git config user.name "JanioSantosSilva"
        git config user.email "jose.j.santos.silva@avanade.com"
-       git remote remove origin || true
-       git remote add origin https://${{secrets.GITHUB_TOKEN}}@github.com/JanioSantosSilva/nuget-package.git
+       git remote add starteam https://${{secrets.GITHUB_TOKEN}}@github.com/JanioSantosSilva/nuget-package.git
        git remote -v
        echo "Minha alteração adicional via echo" >> mensagem.txt
        git add .
@@ -32,7 +32,8 @@ jobs:
        git commit -m "Migrando repositório Github"
        git push --force origin feat
 
-    
+    #export GIT_TRACE=1
+    #export GIT_CURL_VERBOSE=1
 
 
 
