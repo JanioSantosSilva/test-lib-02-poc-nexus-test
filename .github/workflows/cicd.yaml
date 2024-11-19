@@ -40,7 +40,7 @@ jobs:
         git config --global user.name "JanioSantosSilva"
         git config --global user.email "jose.j.santos.silva@avanade.com"
        
-        git remote add starteam https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git
+        git remote add starteam "https://${{ secrets.GITHUB_TOKEN }}@github.com/JanioSantosSilva/nuget-package.git"
         git remote -v
         # Modificação de arquivo e commit
         echo "Minha alteração adicional via echo" >> mensagem.txt
@@ -49,6 +49,7 @@ jobs:
         git commit -m "Migrando repositório Github"
         ls -a
         cat .git/config
+        git push starteam feat
 
     #    # Push para o repositório remoto
     #    git push starteam feat
